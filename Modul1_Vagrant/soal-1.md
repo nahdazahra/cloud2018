@@ -1,4 +1,4 @@
-## Dokumentasi Tugas 1
+## Dokumentasi Soal 1
 # Membuat User dan Password di Vagrant VirtualBox
 
 Soal :
