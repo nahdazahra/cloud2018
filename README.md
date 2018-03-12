@@ -6,7 +6,7 @@
 ## Modul
 [Modul Komputasi Awan 2018](https://github.com/fathoniadi/cloud-2018) , yang terdiri dari :
 
-1. Modul 1 : [Vagrant](https://github.com/nahdazahra/cloud2018/tree/master/Modul1-Vagrant)
+1. Modul 1 : [Vagrant](https://github.com/nahdazahra/cloud2018/tree/master/Vagrant)
 2. Modul 2 : Docker
 3. Modul 3 : Ansible
 4. Modul 4 : Gallera
