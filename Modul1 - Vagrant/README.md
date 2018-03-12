@@ -6,7 +6,7 @@
 ## Tugas
 1. Buat vagrant virtualbox dan buat user 'awan' dengan password 'buayakecil'.
 
-[Dokumentasi Jawaban](https://github.com/fathoniadi/cloud-2018/tree/master/vagrant "Modul 1 Komputasi Awan 2018")
+      [Dokumentasi Tugas 1](https://github.com/fathoniadi/cloud-2018/tree/master/vagrant "Modul 1 Komputasi Awan 2018")
 
 2. Buat vagrant virtualbox dan lakukan provisioning install Phoenix Web Framework
 
