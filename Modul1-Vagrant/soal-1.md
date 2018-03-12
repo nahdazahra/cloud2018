@@ -44,7 +44,7 @@ Membuat sebuah vagrant virtualbox dengan langkah-langkah dan konfigurasi yang te
         config.vm.provision "shell", path: "user-config.sh"
     end
     ```
-3. Simpan **Vagrantfile**
+3. Menyimpan **Vagrantfile**
 
 Jika tidak ingin menggunakan provision script, bisa langsung menambahkan bash script pada **Vagrantfile** (inline). Caranya :
 
@@ -64,7 +64,7 @@ Jika tidak ingin menggunakan provision script, bisa langsung menambahkan bash sc
         echo -e "buayakecil\nbuayakecil\n" | passwd "awan"
     SHELL
     ```
-3. Simpan **Vagrantfile**
+3. Menyimpan **Vagrantfile**
 
 ### **Langkah 4** - Reload Virtualisasi untuk menjalankan provisioning
 1. Jika vagrant telah dinyalakan, lakukan 
