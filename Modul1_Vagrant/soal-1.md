@@ -112,7 +112,14 @@ Jika tidak ingin menggunakan provision script, bisa langsung menambahkan bash sc
 Supaya tidak perlu lagi melakukan ```su awan``` dan menjadikan **user awan** menjadi user default vagrant, maka perlu dilakukan konfigurasi SSH. Caranya :
 
 1. Membuka **Vagrantfile**
-2. Menambahkan
+2. Meng-comment baris
+
+    ```bash
+        config.vm.provision "shell", path: "user-config.sh"
+    ```
+    karena tidak perlu dilakukan pembuatan user dan password berulang-ulang kali
+    
+2. Menambahkan 
 
     ```bash
     config.ssh.username = "awan"
@@ -142,3 +149,6 @@ Ada beberapa kendala yang kami hadapi:
 1. Jika belum dibuat **user awan** dan **password buayakecil** pada vagrant virtualbox, namun sudah meng-config ```ssh.username``` dan ```ssh.password```, hasilnya selalu gagal
 
     ![Kendala](https://github.com/nahdazahra/cloud2018/blob/master/Modul1_Vagrant/assets/kendala.png)
+
+## Script
+[Vagrant dengan User dan Password](https://github.com/fathoniadi/cloud-2018/tree/master/vagrant "Modul 1 Komputasi Awan 2018")
