@@ -1,6 +1,7 @@
 # Vagrant
 ![Image of Yaktocat](https://camo.githubusercontent.com/22b937f354705f272f69fc08f8bac8e05d09fbf2/68747470733a2f2f626c6f672e7468656f646f2e66722f77702d636f6e74656e742f75706c6f6164732f323031372f30372f56616772616e742e706e67)
 
+## Modul
 [Modul 1 Komputasi Awan 2018](https://github.com/fathoniadi/cloud-2018/tree/master/vagrant "Modul 1 Komputasi Awan 2018")
 
 ## Tugas
