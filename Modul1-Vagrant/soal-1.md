@@ -86,7 +86,7 @@ Jika tidak ingin menggunakan provision script, bisa langsung menambahkan bash sc
     ```
     Tampilannya masih tetap sama, seperti biasanya
     
-    ![Tampilan biasa](https://github.com/nahdazahra/cloud2018/blob/master/Modul1_Vagrant/assets/tampilan1.png)
+    ![Tampilan biasa](https://github.com/nahdazahra/cloud2018/blob/master/Modul1-Vagrant/assets/tampilan1.png)
 
     Namun sebenarnya, di dalam virtualisasi telah berhasil dibuat **user awan** dengan **password buayakecil**. Cara mengeceknya
     
@@ -95,7 +95,7 @@ Jika tidak ingin menggunakan provision script, bisa langsung menambahkan bash sc
     ```
     maka akan keluar:
     
-    ![Daftar user](https://github.com/nahdazahra/cloud2018/blob/master/Modul1_Vagrant/assets/daftar-user.png)
+    ![Daftar user](https://github.com/nahdazahra/cloud2018/blob/master/Modul1-Vagrant/assets/daftar-user.png)
 
 2. Untuk masuk ke dalam ```user awan```, ketikkan
 
@@ -106,7 +106,7 @@ Jika tidak ingin menggunakan provision script, bisa langsung menambahkan bash sc
     
     Yay! kita berhasil masuk ke dalam **user awan**.
 
-    ![Daftar user](https://github.com/nahdazahra/cloud2018/blob/master/Modul1_Vagrant/assets/user-awan.png)
+    ![Daftar user](https://github.com/nahdazahra/cloud2018/blob/master/Modul1-Vagrant/assets/user-awan.png)
 
 ### **Langkah 6** - Mengkonfigurasi SSH
 Supaya tidak perlu lagi melakukan ```su awan``` dan menjadikan **user awan** menjadi user default vagrant, maka perlu dilakukan konfigurasi SSH. Caranya :
@@ -140,7 +140,7 @@ Supaya tidak perlu lagi melakukan ```su awan``` dan menjadikan **user awan** men
 
 Hasilnya akan seperti ini
 
-![Tampilan luar biasa](https://github.com/nahdazahra/cloud2018/blob/master/Modul1_Vagrant/assets/tampilan2.png)
+![Tampilan luar biasa](https://github.com/nahdazahra/cloud2018/blob/master/Modul1-Vagrant/assets/tampilan2.png)
 
 
 ## Kendala
@@ -148,7 +148,7 @@ Ada beberapa kendala yang kami hadapi:
 
 1. Jika belum dibuat **user awan** dan **password buayakecil** pada vagrant virtualbox, namun sudah meng-config ```ssh.username``` dan ```ssh.password```, hasilnya selalu gagal
 
-    ![Kendala](https://github.com/nahdazahra/cloud2018/blob/master/Modul1_Vagrant/assets/kendala.png)
+    ![Kendala](https://github.com/nahdazahra/cloud2018/blob/master/Modul1-Vagrant/assets/kendala.png)
 
 ## Script
-[Vagrant dengan User dan Password](https://github.com/nahdazahra/cloud2018/tree/master/Modul1_Vagrant/vagrant_userpass "Vagrant dengan User dan Password")
+[Vagrant dengan User dan Password](https://github.com/nahdazahra/cloud2018/tree/master/Modul1-Vagrant/vagrant_userpass "Vagrant dengan User dan Password")
