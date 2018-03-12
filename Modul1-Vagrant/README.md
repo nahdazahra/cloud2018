@@ -6,11 +6,11 @@
 ## Tugas
 1. Buat vagrant virtualbox dan buat user 'awan' dengan password 'buayakecil'.
 
-      [Dokumentasi Soal 1](https://github.com/nahdazahra/cloud2018/blob/master/Modul1_Vagrant/soal-1.md "Dokumentasi Soal 1")
+      [Dokumentasi Soal 1](https://github.com/nahdazahra/cloud2018/blob/master/Modul1-Vagrant/soal-1.md "Dokumentasi Soal 1")
 
 2. Buat vagrant virtualbox dan lakukan provisioning install Phoenix Web Framework
       
-      [Dokumentasi Soal 2](https://github.com/nahdazahra/cloud2018/blob/master/Modul1_Vagrant/soal-2.md "Dokumentasi Soal 2")
+      [Dokumentasi Soal 2](https://github.com/nahdazahra/cloud2018/blob/master/Modul1-Vagrant/soal-2.md "Dokumentasi Soal 2")
 
 3. Buat vagrant virtualbox dan lakukan provisioning install:
 
@@ -21,12 +21,12 @@
 
     Setelah melakukan provisioning, clone https://github.com/fathoniadi/pelatihan-laravel.git pada folder yang sama dengan vagrantfile di komputer host. Setelah itu sinkronisasi folder pelatihan-laravel host ke vagrant ke /var/www/web dan jangan lupa install vendor laravel agar dapat dijalankan. Setelah itu setting root document nginx ke /var/www/web. webserver VM harus dapat diakses pada port 8080 komputer host dan mysql pada vm dapat diakses pada port 6969 komputer host.
     
-      [Dokumentasi Soal 3](https://github.com/nahdazahra/cloud2018/blob/master/Modul1_Vagrant/soal-3.md "Dokumentasi Soal 3")
+      [Dokumentasi Soal 3](https://github.com/nahdazahra/cloud2018/blob/master/Modul1-Vagrant/soal-3.md "Dokumentasi Soal 3")
 
 4. Buat vagrant virtualbox dan lakukan provisioning install:
 
     * Squid proxy
     * Bind9
     
-      [Dokumentasi Soal 4](https://github.com/nahdazahra/cloud2018/blob/master/Modul1_Vagrant/soal-4.md "Dokumentasi Soal 4")
+      [Dokumentasi Soal 4](https://github.com/nahdazahra/cloud2018/blob/master/Modul1-Vagrant/soal-4.md "Dokumentasi Soal 4")
     
