@@ -132,6 +132,7 @@ Supaya tidak perlu lagi melakukan ```su awan``` dan menjadikan **user awan** men
     ```
 
 Hasilnya akan seperti ini
+
 ![Tampilan luar biasa](https://github.com/nahdazahra/cloud2018/blob/master/Modul1_Vagrant/assets/tampilan2.png)
 
 
@@ -139,3 +140,5 @@ Hasilnya akan seperti ini
 Ada beberapa kendala yang kami hadapi:
 
 1. Jika belum dibuat **user awan** dan **password buayakecil** pada vagrant virtualbox, namun sudah meng-config ```ssh.username``` dan ```ssh.password```, hasilnya selalu gagal
+
+![Kendala](https://github.com/nahdazahra/cloud2018/blob/master/Modul1_Vagrant/assets/kendala.png)
