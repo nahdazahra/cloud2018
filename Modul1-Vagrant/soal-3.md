@@ -68,7 +68,7 @@ Selebihnya, konfigurasinya sama
 
     Keterangan:
 
-    * ```export DEBIAN_FRONTEND=noninteractive``` fungsinya untuk melewati langkah-langkah konfigurasi saat penginstalan. Contohnya penginstalan pada mysql yang memerlukan masukan user, password, dsb 
+    * ```export DEBIAN_FRONTEND=noninteractive``` fungsinya untuk melewati langkah-langkah konfigurasi saat penginstalan. Contohnya penginstalan pada mysql yang meminta masukan user, password, dsb 
 
 3. Menyimpan file **provision.sh**
 
@@ -129,7 +129,7 @@ Maka, repo **pelatihan-laravel** akan ter-clone dalam folder **pelatihan-laravel
     ```bash
     config.vm.synced_folder "pelatihan-laravel/", "/var/www/web"
     ```
-    **pelatihan-laravel/** adalah folder dari repo laravel yang telah kami clone sebelumnya, sedangkan **/var/www/web** adalah folder yang ingin kita sinkronisasikan di dalam virtualisasi vagrant
+    **pelatihan-laravel/** adalah folder dari repo laravel yang telah di-clone sebelumnya, sedangkan **/var/www/web** adalah folder yang ingin di-sinkronisasikan dalam virtualisasi vagrant
 
 3. Menyimpan **Vagrantfile**
 
