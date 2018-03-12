@@ -4,7 +4,7 @@
 2. [Nahda Fauziyah Zahra](https://github.com/nahdazahra) 5115100141
 
 ## Modul
-1. Modul 1 : [Vagrant](https://github.com/haepoo)
+1. Modul 1 : [Vagrant](https://github.com/nahdazahra/cloud2018/tree/master/Modul1_Vagrant)
 2. Modul 2 : Docker
 3. Modul 3 : Ansible
 4. Modul 4 : Gallera
