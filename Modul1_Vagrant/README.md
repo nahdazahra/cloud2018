@@ -9,6 +9,7 @@
       [Dokumentasi Soal 1](https://github.com/nahdazahra/cloud2018/blob/master/Modul1_Vagrant/soal-1.md "Dokumentasi Soal 1")
 
 2. Buat vagrant virtualbox dan lakukan provisioning install Phoenix Web Framework
+      
       [Dokumentasi Soal 2](https://github.com/nahdazahra/cloud2018/blob/master/Modul1_Vagrant/soal-2.md "Dokumentasi Soal 2")
 
 3. Buat vagrant virtualbox dan lakukan provisioning install:
