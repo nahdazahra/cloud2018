@@ -151,4 +151,4 @@ Ada beberapa kendala yang kami hadapi:
     ![Kendala](https://github.com/nahdazahra/cloud2018/blob/master/Modul1_Vagrant/assets/kendala.png)
 
 ## Script
-[Vagrant dengan User dan Password](https://github.com/fathoniadi/cloud-2018/tree/master/vagrant "Modul 1 Komputasi Awan 2018")
+[Vagrant dengan User dan Password](https://github.com/nahdazahra/cloud2018/tree/master/Modul1_Vagrant/vagrant_userpass "Vagrant dengan User dan Password")
