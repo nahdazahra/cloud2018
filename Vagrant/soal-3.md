@@ -51,28 +51,33 @@ Selebihnya, konfigurasinya sama
     apt-get install -y python-software-properties software-properties-common
     LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php
     apt-get update
-    apt-get install -y php7.1 php7.1-xml php7.1-mbstring php7.1-mysql php7.1-json ph$
+    apt-get install -y php7.1 php7.1-xml php7.1-mbstring php7.1-mysql php7.1-json php7.1-curl php7.1-cli php7.1-common php7.1-mcrypt php7.1-gd libapache2-mod-php7.1 php7.1-zip php7.1-fpm
 
     # install git (sunnah sih)
     apt-get install -y git
 
     # install mysql
-    export DEBIAN_FRONTEND=noninteractive
+    # export DEBIAN_FRONTEND=noninteractive
+    debconf-set-selections <<< 'mysql-server mysql-server/root_password password password'
+    debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password password'
     apt-get install -y mysql-server
+    apt-get install -y mysql-client mysql-common
+
+    mysql -uroot -ppassword -e "CREATE DATABASE IF NOT EXISTS dbq;";
+    mysql -uroot -ppassword -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'password';"
+    mysql -uroot -ppassword -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'password';"
+
+    sudo service mysql restart
 
     # install composer
     apt-get install -y curl
     curl -sS https://getcomposer.org/installer | php
     mv composer.phar /usr/local/bin/composer
+
     ```
-
-    Keterangan:
-
-    * ```export DEBIAN_FRONTEND=noninteractive``` fungsinya untuk melewati langkah-langkah konfigurasi saat penginstalan. Contohnya penginstalan pada mysql yang meminta masukan user, password, dsb 
-
 3. Menyimpan file **provision.sh**
 
-### **Langkah 3** - Mengedit Vagrantfile
+### **Langkah 3** - Setting path provision pada Vagrantfile
 1. Membuka **Vagrantfile**
 
     ```bash
@@ -87,20 +92,7 @@ Selebihnya, konfigurasinya sama
 
 3. Menyimpan **Vagrantfile**
 
-### **Langkah 4** - Reload Virtualisasi untuk menjalankan provisioning
-1. Jika vagrant telah dinyalakan, lakukan 
-
-    ```bash
-    vagrant reload --provision
-    ```
-2. Namun jika vagrant belum dinyalakan, maka lakukan 
-
-    ```bash
-    vagrant up --provision
-    ```
-Maka, vagrant akan melakukan instalasi sesuai script pada **provision.sh**
-
-### **Langkah 5** - Clone folder pelatihan-laravel
+### **Langkah 4** - Clone folder pelatihan-laravel
 Masuk ke folder yang sama dengan **Vagrantfile** pada terminal, kemudian mengetik
     
 ```bash
@@ -108,7 +100,7 @@ git clone https://github.com/fathoniadi/pelatihan-laravel
 ```
 Maka, repo **pelatihan-laravel** akan ter-clone dalam folder **pelatihan-laravel** 
 
-### **Langkah 6** - Sinkronisasi folder dan setting permissions pada Vagrantfile
+### **Langkah 5** - Sinkronisasi folder dan setting permissions pada Vagrantfile
 1. Membuka **Vagrantfile**
 
     ```bash
@@ -131,13 +123,7 @@ Maka, repo **pelatihan-laravel** akan ter-clone dalam folder **pelatihan-laravel
 
 3. Menyimpan **Vagrantfile**
 
-4. Melakukan
-    
-    ```bash
-    vagrant reload --provision
-    ```
-
-### **Langkah 7** - Setting Forwarded Port pada Vagrantfile
+### **Langkah 6** - Setting Forwarded Port pada Vagrantfile
 1. Membuka **Vagrantfile**
 
     ```bash
@@ -146,7 +132,7 @@ Maka, repo **pelatihan-laravel** akan ter-clone dalam folder **pelatihan-laravel
 2. Menambahkan baris berikut 
 
     ```bash
-        config.vm.network "forwarded_port", guest: 80, host: 8081
+        config.vm.network "forwarded_port", guest: 80, host: 8080
         config.vm.network "forwarded_port", guest: 3306, host: 6969
     ```
     dibawah comment
@@ -162,8 +148,19 @@ Maka, repo **pelatihan-laravel** akan ter-clone dalam folder **pelatihan-laravel
 
 Keterangan:
 
-* Dalam kasus kami, port 8080 telah digunakan oleh server Tomcat pada PC salah satu dari kami dan terus muncul walaupun sudah di ```sudo kill -9 PID``` hingga kami menyerah dan memilih menggunakan port lain, yaitu 8081   
+* Dalam kasus kami, port 8080 telah digunakan oleh server Tomcat pada PC salah satu dari kami dan terus muncul walaupun sudah di ```sudo kill -9 PID``` hingga kami menyerah dan memilih menggunakan port lain, yaitu 8081
 
+### **Langkah 7** - Reload Virtualisasi
+1. Jika semua konfigurasi pada **Vagrantfile** dan **provision.sh** telah dilakukan, maka reload vagrant dengan 
+
+    ```bash
+    vagrant reload --provision
+    ```
+2. Namun jika vagrant memang belum dinyalakan, maka lakukan 
+
+    ```bash
+    vagrant up --provision
+    ```   
 ### **Langkah 8** - Konfigurasi Nginx
 1. Masuk ke dalam virtualisasi dengan ```vagrant ssh```
 2. Membuka file **default** Nginx
@@ -201,43 +198,39 @@ Keterangan:
             access_log  /var/log/nginx/nginx_access.log;
     }
     ```
-4. Mengetikkan 
+4. Menyalakan service Nginx
 
     ```bash
     sudo service nginx start
     ```
-    atau
+    atau merestartnya jika sebelumnya sudah dinyalakan
 
     ```bash
     sudo service nginx restart
     ```
 
 ### **Langkah 9** - Konfigurasi Laravel
-1. Berpindah ke ```/var/www/web```
+1. Pindah ke folder ```/var/www/web```
 
     ```bash
     cd /var/www/web
     ```
-2. Mengetikkan 
+2. Menginstall dependencies Laravel
 
     ```bash
     composer install
     ```
-    untuk menginstall dependencies laravel
-
 3. Mengubah nama file **.env.example** menjadi **.env**
 
     ```bash
     mv .env.example .env
     ```
-    lalu 
+    lalu menggenerate application key
 
     ```bash
     php artisan key:generate
     ```
-    untuk menggenerate application key
-
-    dan menggantinya isi **.env** menjadi
+    dan mengganti isi **.env** menjadi
     
     ```bash
     APP_NAME=Laravel
@@ -275,17 +268,38 @@ Keterangan:
     PUSHER_APP_SECRET=
     ```
 
-### **Langkah 10** - Melakukan pengecekan
-Buka **localhost:8081** pada browser untuk mengecek apakah web laravel sudah ter-deploy dengan baik
+### **Langkah 10** - Konfigurasi MySQL
+1. Melakukan konfigurasi file **/etc/mysql/mysql.conf.d/mysqld.cnf** dengan mengetikkan
 
-![Tampilan web](img/tampilan-laravel.png)
+    ```bash
+    sudo sed -i '43s/.*/bind-address  = 0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf
+    ```
+2. Restart service mysql
+
+    ```bash
+    sudo service mysql restart
+    ```
+
+### **Langkah 11** - Testing
+1. Untuk testing webserver pada port 8080, buka **localhost:8080** pada browser untuk mengecek apakah web laravel sudah ter-deploy dengan baik. Port dapat diganti sesuai sikon dan konfigurasi forwarded port pada **Vagrantfile**
+
+    ![Tampilan web](https://github.com/nahdazahra/cloud2018/blob/master/Vagrant/img/tampilan-laravel.png)
+
+2. Untuk testing mysql pada port 6969, ketik
+
+    ```bash
+    mysql --host 10.151.253.42 --port 6969 -uroot -p
+    ```
+    dan masukkan password yang telah di setting di **provision.sh**, dalam kasus ini adalah ```password```
+    
+    ![Tampilan web](https://github.com/nahdazahra/cloud2018/blob/master/Vagrant/img/testing-sql.png)
 
 ## Kendala
 Ada beberapa kendala yang kami hadapi:
 
-1. Laravel membutuhkan php 5.5++, sedangkan Vagrant Box **hashicorp/precise64** menggunakan OS Ubuntu 12.04 dimana hanya mampu diinstall php5 (tidak bisa versi di atasnya). Sudah berbagai cara kami coba, termasuk ```wget```dan ```add repo```, hingga akhirnya kami memutuskan untuk memakai Vagrant Box yang menggunakan OS Ubuntu 16.04 saja.
+1. Laravel membutuhkan php 5.5++, sedangkan Vagrant Box **hashicorp/precise64** menggunakan OS Ubuntu 12.04 dimana hanya mampu diinstall php5 (tidak bisa versi di atasnya). Sudah berbagai cara kami coba, termasuk ```wget```dan ```add repo```, hingga akhirnya kami memutuskan untuk memakai Vagrant Box yang menggunakan OS Ubuntu 16.04 saja
 
-2. Untuk melihat error pada nginx dapat dilihat di 
+2. Jika terdapat error pada nginx, cara terbae untuk menyelesaikannya adalah dengan melihat error di 
 
     ```bash
     tail -f /var/log/nginx/nginx_error.log
@@ -293,5 +307,7 @@ Ada beberapa kendala yang kami hadapi:
     supaya bisa membenahi apa masalahnya
 
 ## Script
-[Vagrant Laravel](https://github.com/nahdazahra/cloud2018/tree/master/Vagrant/vagrant_laravel "Vagrant Laravel")
+[Vagrant Laravel 1 - Menggunakan box bento/ubuntu-16.04](https://github.com/nahdazahra/cloud2018/tree/master/Vagrant/vagrant_laravel(1) "Vagrant Laravel")
+
+[Vagrant Laravel 2 - Menggunakan box xenial64](https://github.com/nahdazahra/cloud2018/tree/master/Vagrant/vagrant_laravel(2) "Vagrant Laravel")
 

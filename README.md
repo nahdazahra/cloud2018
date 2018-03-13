@@ -1,6 +1,6 @@
 # Komputasi Awan 2018
 ## Kelompok 4
-1. 5115100043 [Hafara Firdausi](https://github.com/haepoo) 
+1. 5115100043 [Hafara Firdausi](https://github.com/mocatfrio) 
 2. 5115100141 [Nahda Fauziyah Zahra](https://github.com/nahdazahra) 
 
 ## Modul
