@@ -313,5 +313,6 @@ Ada beberapa kendala yang kami hadapi:
 
 ## Script
 [Vagrant Laravel 1](https://github.com/nahdazahra/cloud2018/tree/master/Vagrant/vagrant_laravel(1) "Vagrant Laravel")
+
 [Vagrant Laravel 2](https://github.com/nahdazahra/cloud2018/tree/master/Vagrant/vagrant_laravel(2) "Vagrant Laravel")
 
