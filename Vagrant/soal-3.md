@@ -273,11 +273,23 @@ Keterangan:
     PUSHER_APP_SECRET=
     ```
 
+### **Langkah 10** - Melakukan pengecekan
+Buka **localhost:8081** pada browser untuk mengecek apakah web laravel sudah ter-deploy dengan baik
+
+![Tampilan web](https://github.com/nahdazahra/cloud2018/blob/master/Vagrant/assets/tampilan-laravel.png)
+
 ## Kendala
 Ada beberapa kendala yang kami hadapi:
 
 1. Laravel membutuhkan php 5.5++, sedangkan Vagrant Box **hashicorp/precise64** menggunakan OS Ubuntu 12.04 dimana hanya mampu diinstall php5 (tidak bisa versi di atasnya). Sudah berbagai cara kami coba, termasuk ```wget```dan ```add repo```, hingga akhirnya kami memutuskan untuk memakai Vagrant Box yang menggunakan OS Ubuntu 16.04 saja.
 
+Untuk melihat error pada nginx dapat dilihat di 
+
+```bash
+tail -f /var/log/nginx/nginx_error.log
+```
+supaya bisa membenahi apa masalahnya
+
 ## Script
-[Vagrant Laravel](https://github.com/nahdazahra/cloud2018/tree/master/Modul1_Vagrant/vagrant_laravel "Vagrant Laravel")
+[Vagrant Laravel](https://github.com/nahdazahra/cloud2018/tree/master/Vagrant/vagrant_laravel "Vagrant Laravel")
 
