@@ -296,12 +296,8 @@ Keterangan:
     mysql --host 10.151.253.42 --port 6969 -uroot -p
     ```
     dan masukkan password yang telah di setting di **provision.sh**, dalam kasus ini adalah ```password```
-
-<<<<<<< Updated upstream
-![Tampilan web](img/tampilan-laravel.png)
-=======
-    ![Tampilan mysql](https://github.com/nahdazahra/cloud2018/blob/master/Vagrant/img/testing-sql.png)
->>>>>>> Stashed changes
+    
+    ![Tampilan web](https://github.com/nahdazahra/cloud2018/blob/master/Vagrant/img/testing-sql.png)
 
 ## Kendala
 Ada beberapa kendala yang kami hadapi:
@@ -316,5 +312,6 @@ Ada beberapa kendala yang kami hadapi:
     supaya bisa membenahi apa masalahnya
 
 ## Script
-[Vagrant Laravel](https://github.com/nahdazahra/cloud2018/tree/master/Vagrant/vagrant_laravel "Vagrant Laravel")
+[Vagrant Laravel 1](https://github.com/nahdazahra/cloud2018/tree/master/Vagrant/vagrant_laravel(1) "Vagrant Laravel")
+[Vagrant Laravel 2](https://github.com/nahdazahra/cloud2018/tree/master/Vagrant/vagrant_laravel(2) "Vagrant Laravel")
 
