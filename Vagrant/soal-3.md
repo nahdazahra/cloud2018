@@ -48,25 +48,30 @@ Selebihnya, konfigurasinya sama
     apt-get install -y python-software-properties software-properties-common
     LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php
     apt-get update
-    apt-get install -y php7.1 php7.1-xml php7.1-mbstring php7.1-mysql php7.1-json ph$
+    apt-get install -y php7.1 php7.1-xml php7.1-mbstring php7.1-mysql php7.1-json php7.1-curl php7.1-cli php7.1-common php7.1-mcrypt php7.1-gd libapache2-mod-php7.1 php7.1-zip php7.1-fpm
 
     # install git (sunnah sih)
     apt-get install -y git
 
     # install mysql
-    export DEBIAN_FRONTEND=noninteractive
+    # export DEBIAN_FRONTEND=noninteractive
+    debconf-set-selections <<< 'mysql-server mysql-server/root_password password password'
+    debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password password'
     apt-get install -y mysql-server
+    apt-get install -y mysql-client mysql-common
+
+    mysql -uroot -ppassword -e "CREATE DATABASE IF NOT EXISTS dbq;";
+    mysql -uroot -ppassword -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'password';"
+    mysql -uroot -ppassword -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY 'password';"
+
+    sudo service mysql restart
 
     # install composer
     apt-get install -y curl
     curl -sS https://getcomposer.org/installer | php
     mv composer.phar /usr/local/bin/composer
+
     ```
-
-    Keterangan:
-
-    * ```export DEBIAN_FRONTEND=noninteractive``` fungsinya untuk melewati langkah-langkah konfigurasi saat penginstalan. Contohnya penginstalan pada mysql yang meminta masukan user, password, dsb 
-
 3. Menyimpan file **provision.sh**
 
 ### **Langkah 3** - Mengedit Vagrantfile
@@ -210,31 +215,27 @@ Keterangan:
     ```
 
 ### **Langkah 9** - Konfigurasi Laravel
-1. Berpindah ke ```/var/www/web```
+1. Pindah ke ```/var/www/web```
 
     ```bash
     cd /var/www/web
     ```
-2. Mengetikkan 
+2. Menginstall dependencies Laravel
 
     ```bash
     composer install
     ```
-    untuk menginstall dependencies laravel
-
 3. Mengubah nama file **.env.example** menjadi **.env**
 
     ```bash
     mv .env.example .env
     ```
-    lalu 
+    lalu menggenerate application key
 
     ```bash
     php artisan key:generate
     ```
-    untuk menggenerate application key
-
-    dan menggantinya isi **.env** menjadi
+    dan mengganti isi **.env** menjadi
     
     ```bash
     APP_NAME=Laravel
@@ -272,10 +273,35 @@ Keterangan:
     PUSHER_APP_SECRET=
     ```
 
-### **Langkah 10** - Melakukan pengecekan
-Buka **localhost:8081** pada browser untuk mengecek apakah web laravel sudah ter-deploy dengan baik
+### **Langkah 10** - Konfigurasi MySQL
+1. Melakukan konfigurasi file **/etc/mysql/mysql.conf.d/mysqld.cnf** dengan mengetikkan
 
+    ```bash
+    sudo sed -i '43s/.*/bind-address  = 0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf
+    ```
+2. Restart
+
+    ```bash
+    sudo service mysql restart
+    ```
+
+### **Langkah 11** - Testing
+1. Untuk testing webserver pada port 8080, buka **localhost:8080** pada browser untuk mengecek apakah web laravel sudah ter-deploy dengan baik. Port dapat diganti sesuai sikon dan konfigurasi forwarded port pada **Vagrantfile**
+
+    ![Tampilan web](https://github.com/nahdazahra/cloud2018/blob/master/Vagrant/img/tampilan-laravel.png)
+
+2. Untuk testing mysql pada port 6969, ketik
+
+    ```bash
+    mysql --host 10.151.253.42 --port 6969 -uroot -p
+    ```
+    dan masukkan password yang telah di setting di **provision.sh**, dalam kasus ini adalah ```password```
+
+<<<<<<< Updated upstream
 ![Tampilan web](img/tampilan-laravel.png)
+=======
+    ![Tampilan mysql](https://github.com/nahdazahra/cloud2018/blob/master/Vagrant/img/testing-sql.png)
+>>>>>>> Stashed changes
 
 ## Kendala
 Ada beberapa kendala yang kami hadapi:
