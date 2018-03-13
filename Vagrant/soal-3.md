@@ -148,7 +148,7 @@ Maka, repo **pelatihan-laravel** akan ter-clone dalam folder **pelatihan-laravel
 2. Menambahkan baris berikut 
 
     ```bash
-        config.vm.network "forwarded_port", guest: 80, host: 8081
+        config.vm.network "forwarded_port", guest: 80, host: 8080
         config.vm.network "forwarded_port", guest: 3306, host: 6969
     ```
     dibawah comment
