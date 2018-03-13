@@ -40,7 +40,7 @@ Selebihnya, konfigurasinya sama
 
     apt-get update
 
-    # install nginx 
+    # install nginx
     apt-get install -y nginx
 
     # install php 7.0
@@ -48,12 +48,12 @@ Selebihnya, konfigurasinya sama
     apt-get install -y python-software-properties software-properties-common
     LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php
     apt-get update
-    apt-get install -y php7.0 php7.0-fpm php7.0-cli php7.0-cgi php7.0-mysql php7.0-m$
+    apt-get install -y php7.1 php7.1-xml php7.1-mbstring php7.1-mysql php7.1-json ph$
 
     # install git (sunnah sih)
     apt-get install -y git
 
-    # install mysql       
+    # install mysql
     export DEBIAN_FRONTEND=noninteractive
     apt-get install -y mysql-server
 
@@ -61,9 +61,6 @@ Selebihnya, konfigurasinya sama
     apt-get install -y curl
     curl -sS https://getcomposer.org/installer | php
     mv composer.phar /usr/local/bin/composer
-
-    # install vendor laravel
-    composer global require "laravel/installer"
     ```
 
     Keterangan:
@@ -83,12 +80,8 @@ Selebihnya, konfigurasinya sama
     ```bash
         config.vm.provision "shell", path: "provision.sh"
     ```
-    diatas ```end``` paling terakhir, sehingga menjadi 
-    
-    ```bash
-        config.vm.provision "shell", path: "provision.sh"
-    end
-    ```
+    diatas ```end``` paling terakhir
+
 3. Menyimpan **Vagrantfile**
 
 ### **Langkah 4** - Reload Virtualisasi untuk menjalankan provisioning
@@ -113,7 +106,7 @@ git clone https://github.com/fathoniadi/pelatihan-laravel
 ```
 Maka, repo **pelatihan-laravel** akan ter-clone dalam folder **pelatihan-laravel** 
 
-### **Langkah 6** - Sinkronisasi folder 
+### **Langkah 6** - Sinkronisasi folder dan setting permissions pada Vagrantfile
 1. Membuka **Vagrantfile**
 
     ```bash
@@ -127,9 +120,12 @@ Maka, repo **pelatihan-laravel** akan ter-clone dalam folder **pelatihan-laravel
     dan menggantinya menjadi 
     
     ```bash
-    config.vm.synced_folder "pelatihan-laravel/", "/var/www/web"
+    config.vm.synced_folder "pelatihan-laravel/", "/var/www/web", 
+        id: "vagrant-root",
+        owner: "vagrant",
+        group: "www-data",
+        mount_options: ["dmode=775,fmode=664"]
     ```
-    **pelatihan-laravel/** adalah folder dari repo laravel yang telah di-clone sebelumnya, sedangkan **/var/www/web** adalah folder yang ingin di-sinkronisasikan dalam virtualisasi vagrant
 
 3. Menyimpan **Vagrantfile**
 
@@ -138,8 +134,144 @@ Maka, repo **pelatihan-laravel** akan ter-clone dalam folder **pelatihan-laravel
     ```bash
     vagrant reload --provision
     ```
-### **Langkah 7** - Setting root document Nginx 
 
+### **Langkah 7** - Setting Forwarded Port pada Vagrantfile
+1. Membuka **Vagrantfile**
+
+    ```bash
+    nano Vagrantfile
+    ```
+2. Menambahkan baris berikut 
+
+    ```bash
+        config.vm.network "forwarded_port", guest: 80, host: 8081
+        config.vm.network "forwarded_port", guest: 3306, host: 6969
+    ```
+    dibawah comment
+
+    ```bash
+    # Create a forwarded port mapping which allows access to a specific port
+    # within the machine from a port on the host machine. In the example below,
+    # accessing "localhost:8080" will access port 80 on the guest machine.
+    # NOTE: This will enable public access to the opened port
+    ```
+
+3. Menyimpan **Vagrantfile**
+
+Keterangan:
+
+* Dalam kasus kami, port 8080 telah digunakan oleh server Tomcat pada PC salah satu dari kami dan terus muncul walaupun sudah di ```sudo kill -9 PID``` hingga kami menyerah dan memilih menggunakan port lain, yaitu 8081   
+
+### **Langkah 8** - Konfigurasi Nginx
+1. Masuk ke dalam virtualisasi dengan ```vagrant ssh```
+2. Membuka file **default** Nginx
+
+    ```bash
+    sudo nano /etc/nginx/sites-enabled/default
+    ```
+3. Mengedit file **default** menjadi seperti ini
+
+    ```bash
+    server {
+            listen 80 default_server;
+            listen [::]:80 default_server;
+
+            root /var/www/web/public;
+
+            index index.php index.html index.htm index.nginx-debian.html;
+
+            server_name localhost;
+
+            location / {
+                    try_files $uri $uri/ =404;
+            }
+
+            location ~ \.php$ {
+                    try_files $uri /index.php =404;
+                    fastcgi_split_path_info ^(.+\.php)(/.+)$;
+                    fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+                    fastcgi_index index.php;
+                    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+                    include fastcgi_params;
+            }
+
+            error_log  /var/log/nginx/nginx_error.log;
+            access_log  /var/log/nginx/nginx_access.log;
+    }
+    ```
+4. Mengetikkan 
+
+    ```bash
+    sudo service nginx start
+    ```
+    atau
+
+    ```bash
+    sudo service nginx restart
+    ```
+
+### **Langkah 9** - Konfigurasi Laravel
+1. Berpindah ke ```/var/www/web```
+
+    ```bash
+    cd /var/www/web
+    ```
+2. Mengetikkan 
+
+    ```bash
+    composer install
+    ```
+    untuk menginstall dependencies laravel
+
+3. Mengubah nama file **.env.example** menjadi **.env**
+
+    ```bash
+    mv .env.example .env
+    ```
+    lalu 
+
+    ```bash
+    php artisan key:generate
+    ```
+    untuk menggenerate application key
+
+    dan menggantinya isi **.env** menjadi
+    
+    ```bash
+    APP_NAME=Laravel
+    APP_ENV=local
+    APP_KEY=base64:ApNV2Q5c0+dFjNh2nIHLeD7cHyVH/hLK7+Pp0sARowU= #ini hasil generate
+    APP_DEBUG=true
+    APP_LOG_LEVEL=debug
+    APP_URL=http://localhost
+
+    DB_CONNECTION=mysql
+    DB_HOST=localhost #ini diganti sendiri
+    DB_PORT=3306
+    DB_DATABASE=blog
+    DB_USERNAME=root
+    DB_PASSWORD=
+
+    BROADCAST_DRIVER=log
+    CACHE_DRIVER=file
+    SESSION_DRIVER=file
+    QUEUE_DRIVER=sync
+
+    REDIS_HOST=127.0.0.1
+    REDIS_PASSWORD=null
+    REDIS_PORT=6379
+
+    MAIL_DRIVER=smtp
+    MAIL_HOST=smtp.mailtrap.io
+    MAIL_PORT=2525
+    MAIL_USERNAME=null
+    MAIL_PASSWORD=null
+    MAIL_ENCRYPTION=null
+
+    PUSHER_APP_ID=
+    PUSHER_APP_KEY=
+    PUSHER_APP_SECRET=
+    ```
 
 ## Kendala
 Ada beberapa kendala yang kami hadapi:
