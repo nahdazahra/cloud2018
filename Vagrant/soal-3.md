@@ -276,7 +276,7 @@ Keterangan:
 ### **Langkah 10** - Melakukan pengecekan
 Buka **localhost:8081** pada browser untuk mengecek apakah web laravel sudah ter-deploy dengan baik
 
-![Tampilan web](https://github.com/nahdazahra/cloud2018/blob/master/Vagrant/assets/tampilan-laravel.png)
+![Tampilan web](https://github.com/nahdazahra/cloud2018/blob/master/Vagrant/img/tampilan-laravel.png)
 
 ## Kendala
 Ada beberapa kendala yang kami hadapi:
