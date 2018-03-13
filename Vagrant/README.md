@@ -29,5 +29,5 @@
     * Squid proxy
     * Bind9
     
-      [Dokumentasi Soal 4](https://github.com/nahdazahra/cloud2018/blob/master/Vagrant/soal-4.md "Dokumentasi Soal 4")
+    [Dokumentasi Soal 4](https://github.com/nahdazahra/cloud2018/blob/master/Vagrant/soal-4.md "Dokumentasi Soal 4")
     
