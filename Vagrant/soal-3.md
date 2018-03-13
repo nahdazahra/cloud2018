@@ -97,8 +97,7 @@ Selebihnya, konfigurasinya sama
     ```
 Maka, vagrant akan melakukan instalasi sesuai script pada **provision.sh**
 
-### **Langkah 5** - Clone repo pelatihan-laravel
-
+### **Langkah 5** - Clone folder pelatihan-laravel
 Masuk ke folder yang sama dengan **Vagrantfile** pada terminal, kemudian mengetik
     
 ```bash
