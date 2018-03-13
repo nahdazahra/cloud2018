@@ -74,7 +74,7 @@ Selebihnya, konfigurasinya sama
     ```
 3. Menyimpan file **provision.sh**
 
-### **Langkah 3** - Mengedit Vagrantfile
+### **Langkah 3** - Setting path provision pada Vagrantfile
 1. Membuka **Vagrantfile**
 
     ```bash
@@ -89,20 +89,7 @@ Selebihnya, konfigurasinya sama
 
 3. Menyimpan **Vagrantfile**
 
-### **Langkah 4** - Reload Virtualisasi untuk menjalankan provisioning
-1. Jika vagrant telah dinyalakan, lakukan 
-
-    ```bash
-    vagrant reload --provision
-    ```
-2. Namun jika vagrant belum dinyalakan, maka lakukan 
-
-    ```bash
-    vagrant up --provision
-    ```
-Maka, vagrant akan melakukan instalasi sesuai script pada **provision.sh**
-
-### **Langkah 5** - Clone folder pelatihan-laravel
+### **Langkah 4** - Clone folder pelatihan-laravel
 Masuk ke folder yang sama dengan **Vagrantfile** pada terminal, kemudian mengetik
     
 ```bash
@@ -110,7 +97,7 @@ git clone https://github.com/fathoniadi/pelatihan-laravel
 ```
 Maka, repo **pelatihan-laravel** akan ter-clone dalam folder **pelatihan-laravel** 
 
-### **Langkah 6** - Sinkronisasi folder dan setting permissions pada Vagrantfile
+### **Langkah 5** - Sinkronisasi folder dan setting permissions pada Vagrantfile
 1. Membuka **Vagrantfile**
 
     ```bash
@@ -133,13 +120,7 @@ Maka, repo **pelatihan-laravel** akan ter-clone dalam folder **pelatihan-laravel
 
 3. Menyimpan **Vagrantfile**
 
-4. Melakukan
-    
-    ```bash
-    vagrant reload --provision
-    ```
-
-### **Langkah 7** - Setting Forwarded Port pada Vagrantfile
+### **Langkah 6** - Setting Forwarded Port pada Vagrantfile
 1. Membuka **Vagrantfile**
 
     ```bash
@@ -164,8 +145,19 @@ Maka, repo **pelatihan-laravel** akan ter-clone dalam folder **pelatihan-laravel
 
 Keterangan:
 
-* Dalam kasus kami, port 8080 telah digunakan oleh server Tomcat pada PC salah satu dari kami dan terus muncul walaupun sudah di ```sudo kill -9 PID``` hingga kami menyerah dan memilih menggunakan port lain, yaitu 8081   
+* Dalam kasus kami, port 8080 telah digunakan oleh server Tomcat pada PC salah satu dari kami dan terus muncul walaupun sudah di ```sudo kill -9 PID``` hingga kami menyerah dan memilih menggunakan port lain, yaitu 8081
 
+### **Langkah 7** - Reload Virtualisasi
+1. Jika semua konfigurasi pada **Vagrantfile** dan **provision.sh** telah dilakukan, maka reload vagrant dengan 
+
+    ```bash
+    vagrant reload --provision
+    ```
+2. Namun jika vagrant memang belum dinyalakan, maka lakukan 
+
+    ```bash
+    vagrant up --provision
+    ```   
 ### **Langkah 8** - Konfigurasi Nginx
 1. Masuk ke dalam virtualisasi dengan ```vagrant ssh```
 2. Membuka file **default** Nginx
@@ -203,19 +195,19 @@ Keterangan:
             access_log  /var/log/nginx/nginx_access.log;
     }
     ```
-4. Mengetikkan 
+4. Menyalakan service Nginx
 
     ```bash
     sudo service nginx start
     ```
-    atau
+    atau merestartnya jika sebelumnya sudah dinyalakan
 
     ```bash
     sudo service nginx restart
     ```
 
 ### **Langkah 9** - Konfigurasi Laravel
-1. Pindah ke ```/var/www/web```
+1. Pindah ke folder ```/var/www/web```
 
     ```bash
     cd /var/www/web
@@ -279,7 +271,7 @@ Keterangan:
     ```bash
     sudo sed -i '43s/.*/bind-address  = 0.0.0.0/' /etc/mysql/mysql.conf.d/mysqld.cnf
     ```
-2. Restart
+2. Restart service mysql
 
     ```bash
     sudo service mysql restart
@@ -302,9 +294,9 @@ Keterangan:
 ## Kendala
 Ada beberapa kendala yang kami hadapi:
 
-1. Laravel membutuhkan php 5.5++, sedangkan Vagrant Box **hashicorp/precise64** menggunakan OS Ubuntu 12.04 dimana hanya mampu diinstall php5 (tidak bisa versi di atasnya). Sudah berbagai cara kami coba, termasuk ```wget```dan ```add repo```, hingga akhirnya kami memutuskan untuk memakai Vagrant Box yang menggunakan OS Ubuntu 16.04 saja.
+1. Laravel membutuhkan php 5.5++, sedangkan Vagrant Box **hashicorp/precise64** menggunakan OS Ubuntu 12.04 dimana hanya mampu diinstall php5 (tidak bisa versi di atasnya). Sudah berbagai cara kami coba, termasuk ```wget```dan ```add repo```, hingga akhirnya kami memutuskan untuk memakai Vagrant Box yang menggunakan OS Ubuntu 16.04 saja
 
-2. Untuk melihat error pada nginx dapat dilihat di 
+2. Jika terdapat error pada nginx, cara terbae untuk menyelesaikannya adalah dengan melihat error di 
 
     ```bash
     tail -f /var/log/nginx/nginx_error.log
@@ -312,7 +304,7 @@ Ada beberapa kendala yang kami hadapi:
     supaya bisa membenahi apa masalahnya
 
 ## Script
-[Vagrant Laravel 1](https://github.com/nahdazahra/cloud2018/tree/master/Vagrant/vagrant_laravel(1) "Vagrant Laravel")
+[Vagrant Laravel 1 - Menggunakan box bento/ubuntu-16.04](https://github.com/nahdazahra/cloud2018/tree/master/Vagrant/vagrant_laravel(1) "Vagrant Laravel")
 
-[Vagrant Laravel 2](https://github.com/nahdazahra/cloud2018/tree/master/Vagrant/vagrant_laravel(2) "Vagrant Laravel")
+[Vagrant Laravel 2 - Menggunakan box xenial64](https://github.com/nahdazahra/cloud2018/tree/master/Vagrant/vagrant_laravel(2) "Vagrant Laravel")
 
