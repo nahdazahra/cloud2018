@@ -4,8 +4,9 @@
 2. 5115100141 [Nahda Fauziyah Zahra](https://github.com/nahdazahra) 
 
 ## Modul
-[Modul Komputasi Awan 2018](https://github.com/fathoniadi/cloud-2018) , yang terdiri dari :
+[Modul Komputasi Awan 2018](https://github.com/fathoniadi/cloud-2018)
 
+## Dokumentasi Tugas
 1. Modul 1 : [Vagrant](https://github.com/nahdazahra/cloud2018/tree/master/Vagrant)
 2. Modul 2 : Docker
 3. Modul 3 : Ansible
