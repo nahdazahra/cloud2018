@@ -11,4 +11,4 @@
 2. Modul 2 : Docker
 3. Modul 3 : Ansible
 4. Modul 4 : Gallera
-5. Modul 5 : Load Balancing
+5. Modul 5 : Load Balancingg
