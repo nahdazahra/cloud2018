@@ -15,6 +15,6 @@ Soal :
 
     [Penyelesaian](https://github.com/nahdazahra/cloud2018/blob/master/Nginx/soal-2.md)
 
-3. Biasanya pada saat membuat website, data user yang sedang login disimpan pada session. Sesision secara default tersimpan pada memory pada sebuah host. Bagaimana cara mengatasi masalah session ketika kita melakukan load balancing?
+3. Biasanya pada saat membuat website, data user yang sedang login disimpan pada session. Session secara default tersimpan pada memory pada sebuah host. Bagaimana cara mengatasi masalah session ketika kita melakukan load balancing?
 
     [Penyelesaian](https://github.com/nahdazahra/cloud2018/blob/master/Nginx/soal-3.md)
