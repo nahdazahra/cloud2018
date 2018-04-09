@@ -1,4 +1,4 @@
-## Dokumentasi Soal 4
+## Penyelesaian Soal 4
 # Instalasi Squid Proxy dan Bind9 dengan Provision
 
 ## Soal

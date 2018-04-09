@@ -1,4 +1,4 @@
-## Dokumentasi Soal 2
+## Penyelesaian Soal 2
 # Instalasi Phoenix Web Framework dengan Provision
 
 ## Soal
