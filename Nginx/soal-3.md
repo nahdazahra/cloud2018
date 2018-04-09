@@ -4,7 +4,9 @@
 ## Soal
 
 ```
-Biasanya pada saat membuat website, data user yang sedang login disimpan pada session. Session secara default tersimpan pada memory pada sebuah host. Bagaimana cara mengatasi masalah session ketika kita melakukan load balancing?
+Biasanya pada saat membuat website, data user yang sedang login disimpan pada session. 
+Session secara default tersimpan pada memory pada sebuah host. 
+Bagaimana cara mengatasi masalah session ketika kita melakukan load balancing?
 ```
 
 ## Penyelesaian
@@ -17,15 +19,24 @@ Nah, jika ada 3 server yang melayani, maka masing-masing server itu akan membuat
 
     Case 1
 
-    Jika kalian masih kesulitan membayangkan pentingnya masalah session dalam load balancing, mari kita lihat studi kasus berikut:
+    Jika kalian masih kesulitan membayangkan pentingnya masalah session dalam load balancing, 
+    mari kita lihat studi kasus berikut:
 
-    Pada sebuah web online shop, User A mengisi shopping cart dengan barang-barang yang ingin dibelinya. Barang-barang dalam shopping cart memang sudah dipilih, namun belum dipesan. Karena sifatnya sementara dan bisa dibatalkan sewaktu-waktu, sehingga hanya disimpan dalam session, tidak disimpan ke dalam database.
+    Pada sebuah web online shop, User A mengisi shopping cart dengan barang-barang yang ingin dibelinya. 
+    Barang-barang dalam shopping cart memang sudah dipilih, namun belum dipesan. 
+    Karena sifatnya sementara dan bisa dibatalkan sewaktu-waktu, 
+    sehingga hanya disimpan dalam session, tidak disimpan ke dalam database.
 
-    Si user memilih barang pertama di **server A**, namun saat memilih barang kedua dilayani oleh **server B**. Karena barang pilihan pertama tersimpan di session server A, maka ketika dia memilih barang kedua di server B hanya terihat 1 barang yang sudah dipilih, padahal ada 2 barang (barang 1-nya ketinggalan di server A)
+    Si user memilih barang pertama di **server A**, namun saat memilih barang kedua dilayani oleh **server B**. 
+    Karena barang pilihan pertama tersimpan di session server A, 
+    maka ketika dia memilih barang kedua di server B hanya terihat 1 barang yang sudah dipilih, 
+    padahal ada 2 barang (barang 1-nya ketinggalan di server A)
 
 
 Permasalahan terkait session seperti contoh di atas dapat diatasi dengan **Sticky Session**.
 
-**Sticky Session** membuat semua request dari client diarahkan ke server yang sama dengan server sebelumnya (yang sudah menyimpan data sessionnya) walaupun ada server lain yang tersedia
+**Sticky Session** membuat semua request dari client diarahkan ke server yang sama dengan server sebelumnya (yang sudah menyimpan data sessionnya) walaupun ada server lain yang tersedia. Gampangnya lihat gambar dibawah ini:
 
 ![sticky session](https://wwwimages2.adobe.com/content/dam/acom/en/devnet/coldfusion/articles/clustering_cf8/1283240747221.jpg)
+
+User 1 akan tetap dilayani oleh server 1 dan user 2 akan tetap dilayani oleh server 2.
