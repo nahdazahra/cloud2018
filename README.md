@@ -8,6 +8,8 @@
 
 ## Dokumentasi Tugas
 1. Modul 1 : [Vagrant](https://github.com/nahdazahra/cloud2018/tree/master/Vagrant)
+
+    1.1 [Nginx](blabla)
 2. Modul 2 : Docker
 3. Modul 3 : Ansible
 4. Modul 4 : Gallera
