@@ -11,7 +11,7 @@ Bagaimana cara mengatasi masalah session ketika kita melakukan load balancing?
 
 ## Penyelesaian
 
-Ketika sebuah website hanya dilayani oleh 1 server, request yang masuk dari client akan membuat data session yang disimpan dalam memory server tersebut. Jika ada request yang masuk lagi akan tetap dilayani oleh server yang sama dan memperbarui data session yang tersimpan.
+Ketika sebuah website hanya dilayani oleh 1 server, data session user akan disimpan dalam memori server tersebut. Jika ada request dari user yang sama akan tetap dilayani oleh server yang sama dan memperbarui data session yang tersimpan.
 
 Lain halnya jika website tersebut dilayani oleh beberapa server yang diatur menggunakan **Load Balancer**. Load balancer ini menentukan server mana yang harus melayani setiap kali ada request masuk. Katakanlah ada server A, B, dan C. Bisa jadi www.daus.com/index dilayani oleh server A, www.daus.com/login dilayani oleh server B, dan www.daus.com/account dilayani oleh server C.
 
