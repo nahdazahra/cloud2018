@@ -17,20 +17,15 @@ Lain halnya jika website tersebut dilayani oleh beberapa server yang diatur meng
 
 Nah, jika ada 3 server yang melayani, maka masing-masing server itu akan membuat data sessionnya sendiri-sendiri yang disimpan dalam memori masing-masing, sehingga kita harus selalu mengsinkronkan session supaya tetap sama satu sama lain. Untuk mensinkronkan session, kita harus **menyimpan data session di layer yang bisa diakses oleh seluruh server**, contohnya database. Tapi ini bukan cara yang bagus. Mengapa? karena session sifatnya sementara, biasanya tidak disimpan secara persisten di dalam database.
 
-    Case 1
+### **Case 1**
 
-    Jika kalian masih kesulitan membayangkan pentingnya masalah session dalam load balancing, 
-    mari kita lihat studi kasus berikut:
+Jika kalian masih kesulitan membayangkan pentingnya masalah session dalam load balancing, 
+mari kita lihat studi kasus berikut:
 
-    Pada sebuah web online shop, User A mengisi shopping cart dengan barang-barang yang ingin dibelinya. 
-    Barang-barang dalam shopping cart memang sudah dipilih, namun belum dipesan. 
-    Karena sifatnya sementara dan bisa dibatalkan sewaktu-waktu, 
-    sehingga hanya disimpan dalam session, tidak disimpan ke dalam database.
+Pada sebuah web online shop, User A mengisi shopping cart dengan barang-barang yang ingin dibelinya. Barang-barang dalam shopping cart memang sudah dipilih, namun belum dipesan. 
+Karena sifatnya sementara dan bisa dibatalkan sewaktu-waktu, sehingga hanya disimpan dalam session, tidak disimpan ke dalam database.
 
-    Si user memilih barang pertama di **server A**, namun saat memilih barang kedua dilayani oleh **server B**. 
-    Karena barang pilihan pertama tersimpan di session server A, 
-    maka ketika dia memilih barang kedua di server B hanya terihat 1 barang yang sudah dipilih, 
-    padahal ada 2 barang (barang 1-nya ketinggalan di server A)
+Si user memilih barang pertama di **server A**, namun saat memilih barang kedua dilayani oleh **server B**. Karena barang pilihan pertama tersimpan di session server A, maka ketika dia memilih barang kedua di server B hanya terihat 1 barang yang sudah dipilih, padahal ada 2 barang (barang 1-nya ketinggalan di server A)
 
 
 Permasalahan terkait session seperti contoh di atas dapat diatasi dengan **Sticky Session**.
