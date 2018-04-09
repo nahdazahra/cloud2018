@@ -17,7 +17,7 @@ Lain halnya jika website tersebut dilayani oleh beberapa server yang diatur meng
 
 Nah, jika ada 3 server yang melayani, maka masing-masing server itu akan membuat data sessionnya sendiri-sendiri yang disimpan dalam memori masing-masing, sehingga kita harus selalu mengsinkronkan session supaya tetap sama satu sama lain. Untuk mensinkronkan session, kita harus **menyimpan data session di layer yang bisa diakses oleh seluruh server**, contohnya database. Tapi ini bukan cara yang bagus. Mengapa? karena session sifatnya sementara, biasanya tidak disimpan secara persisten di dalam database.
 
-### **Case 1**
+#### **Case 1**
 
 Jika kalian masih kesulitan membayangkan pentingnya masalah session dalam load balancing, 
 mari kita lihat studi kasus berikut:
