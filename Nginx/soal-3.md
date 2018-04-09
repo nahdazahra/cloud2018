@@ -15,7 +15,7 @@ Pada sebuah website yang hanya dilayani oleh 1 server, request pertama kali yang
 
 Lain halnya jika website tersebut dilayani oleh beberapa server yang diatur menggunakan **Load Balancer**. Load balancer menentukan server mana yang harus melayani setiap kali ada request masuk. Katakanlah ada server A, B, dan C. Bisa jadi www.daus.com/index dilayani oleh server A, www.daus.com/login dilayani oleh server B, dan www.daus.com/account dilayani oleh server C.
 
-Nah, jika ada 3 server yang melayani, maka masing-masing server itu akan membuat data sessionnya sendiri-sendiri yang disimpan dalam memori masing-masing, sehingga kita harus selalu mengsinkronkan session supaya tetap sama antar server satu sama lain. Untuk mensinkronkan session, kita harus **menyimpan data session di layer yang bisa diakses oleh seluruh server**, contohnya database. Tapi ini bukan cara yang baik. Mengapa? karena session sifatnya sementara, sehingga tidak disimpan secara persisten di dalam database.
+Nah, jika ada 3 server yang melayani, maka masing-masing server itu akan membuat data sessionnya sendiri-sendiri yang disimpan dalam memori masing-masing, sehingga kita harus selalu mensinkronkan session supaya tetap sama antar server. Untuk mensinkronkan session, kita harus **menyimpan data session di layer yang bisa diakses oleh seluruh server**, contohnya database. Tapi ini bukan cara yang baik. Mengapa? karena session sifatnya sementara, sehingga tidak disimpan secara persisten di dalam database.
 
 #### **Case 1**
 
