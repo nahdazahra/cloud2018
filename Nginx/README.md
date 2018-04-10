@@ -6,7 +6,6 @@
 Buatlah sistem load balancing dengan 1 load balancer (Nginx) dan 2 worker (Apache2), terapkan algoritma load balancing **round-robin**, **least-connected**, dan **ip-hash**.
 
 Soal :
-
 1. Buatlah Vagrantfile sekaligus provisioning-nya untuk menyelesaikan kasus.
 
     [Penyelesaian](https://github.com/nahdazahra/cloud2018/blob/master/Nginx/soal-1.md)
