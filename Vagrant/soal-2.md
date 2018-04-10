@@ -16,7 +16,7 @@ Membuat sebuah vagrant virtualbox dengan langkah-langkah dan konfigurasi yang te
 
     ```bash
     nano installation.sh
-                                   ```
+    ```
 2. Menuliskan script berikut
 
     ```bash

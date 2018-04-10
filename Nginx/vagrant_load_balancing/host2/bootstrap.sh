@@ -12,6 +12,4 @@ cat >> /var/www/html/index.html << 'EOF'
 test worker 2
 EOF
 
-a2ensite default
-service apache2 reload
 service apache2 restart

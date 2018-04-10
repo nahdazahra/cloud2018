@@ -58,21 +58,14 @@ server {
 }
 EOF
 
+# membuat symbolic link untuk mengaktifkan konfigurasi web server
 ln -fs /etc/nginx/sites-available/def-8000 /etc/nginx/sites-enabled
 
+### konfigurasi php 5 fpm
 cd /var/www/web
-
 sed -f "listen = /var/run/php5-fpm.sock" www.conf
 sed -i "s/;listen.owner = www-data/listen.owner = www-data/g" www.conf
 sed -i "s/;listen.group = www-data/listen.group = www-data/g" www.conf
 
 service nginx restart
 service php5-fpm restart
-
-# buat file index.php untuk uji coba php pada nginx
-cat >> /usr/share/nginx/www/index.php << 'EOF'
-<?php
-echo "Hello from 192.168.0.2";
-phpinfo();
-?>
-EOF
