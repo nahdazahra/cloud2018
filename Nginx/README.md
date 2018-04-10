@@ -3,7 +3,7 @@
 ![Nginx as Load Balancer](https://static.thegeekstuff.com/wp-content/uploads/2017/01/nginx-loadbalancer.png)
 
 ## Soal dan Penyelesaian
-Buatlah sistem load balancing dengan 1 load balancer (Nginx dan 2 worker (Apache2)), terapkan algoritma load balancing **round-robin**, **least-connected**, dan **ip-hash**.
+Buatlah sistem load balancing dengan 1 load balancer (Nginx) dan 2 worker (Apache2), terapkan algoritma load balancing **round-robin**, **least-connected**, dan **ip-hash**.
 
 Soal :
 
