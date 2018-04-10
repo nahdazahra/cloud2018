@@ -53,7 +53,7 @@ Membuat sebuah vagrant virtualbox dengan langkah-langkah dan konfigurasi yang te
 2. Menambahkan baris berikut 
 
     ```bash
-        config.vm.provision "shell", path: "installation.sh"
+    config.vm.provision "shell", path: "installation.sh"
     ```
     diatas ```end``` paling terakhir
 
