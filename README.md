@@ -7,8 +7,6 @@
 [Modul Komputasi Awan 2018](https://github.com/fathoniadi/cloud-2018)
 
 ## Dokumentasi Tugas
-1. Modul 1 : [Vagrant](https://github.com/nahdazahra/cloud2018/tree/master/Vagrant)
-2. Modul 2 : Docker
-3. Modul 3 : Ansible
-4. Modul 4 : Gallera
-5. Modul 5 : [Load Balancing](https://github.com/nahdazahra/cloud2018/tree/master/Nginx)
+1. Tugas 1 : [Vagrant](https://github.com/nahdazahra/cloud2018/tree/master/Vagrant)
+2. Tugas 2 : [Load Balancing](https://github.com/nahdazahra/cloud2018/tree/master/Nginx)
+3. Tugas 3 : [Docker](https://github.com/nahdazahra/cloud2018/tree/master/Docker)
