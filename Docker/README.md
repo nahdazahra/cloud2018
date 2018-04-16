@@ -20,9 +20,9 @@ Setelah mempersiapkan worker, mereka kemudian menyiapkan nginx untuk loadbalanci
 
 Karena web mereka membutuhkan mysql sebagai database, terakhir mereka membuat container mysql (diperbolehkan menggunakan images container yang sudah jadi dan ada di Docker Hub) yang dapat diakses oleh ke-3 worker yang berisi web mereka tadi dengan environment:
 
-username : userawan
-password : buayakecil
-nama database : reservasi
+    username : userawan
+    password : buayakecil
+    nama database : reservasi
 
 Selain setup environmet mysql, mereka juga mengimport dump database web mereka menggunakan Docker Compose dan tak lupa membuat volume agar storage mysql menjadi persisten[4].
 
