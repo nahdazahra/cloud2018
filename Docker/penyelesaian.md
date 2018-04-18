@@ -1,7 +1,7 @@
 ## Dokumentasi Penyelesaian Tugas Docker
 # Deploy Aplikasi Python Flask menggunakan Docker, Nginx sebagai Load Balancer dan MySQL sebagai Database
 
-Dalam menyelesaikan permasalahan tersebut, ada beberapa langkah langkah yang harus dilakukan. Secara garis besar,
+Dalam menyelesaikan permasalahan tersebut, ada beberapa langkah-langkah yang harus dilakukan. Secara garis besar, seperti ini:
 
 1. Membuat custom image container **python flask** sebagai worker
 2. Membuat image container **nginx** sebagai load-balancer (boleh menggunakan yang sudah ada di Docker Hub)
