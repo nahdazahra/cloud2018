@@ -172,7 +172,7 @@ Untuk lebih jelasnya, dapat dilihat pada ilustrasi di bawah ini
 
     pada level direktori yang sama dengan direktori ``docker-compose.yml``.
 
-    ![docker-compose](https://github.com/nahdazahra/cloud2018/tree/master/Docker/img/docker-compose.png)
+    ![docker-compose](https://github.com/nahdazahra/cloud2018/blob/master/Docker/img/docker-compose.png)
 
 5. Cek pada browser
 
@@ -182,5 +182,5 @@ Untuk lebih jelasnya, dapat dilihat pada ilustrasi di bawah ini
     
     Maka akan muncul tampilan web seperti dibawah ini:
 
-    ![docker-compose](https://github.com/nahdazahra/cloud2018/tree/master/Docker/img/web-reservasi.png)
+    ![docker-compose](https://github.com/nahdazahra/cloud2018/blob/master/Docker/img/web-reservasi.png)
 
