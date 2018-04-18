@@ -188,4 +188,4 @@ YAY SELESAI!
 
 Sehingga, isi dari direktori docker kami adalah sebagai berikut:
 
-![tree-docker](https://github.com/nahdazahra/cloud2018/blob/master/Docker/img/web-reservasi.png)
+![tree-docker](https://github.com/nahdazahra/cloud2018/blob/master/Docker/img/tree-docker.png)
