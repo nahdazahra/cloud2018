@@ -22,4 +22,4 @@ Selain setup environmet mysql, mereka juga mengimport dump database web mereka m
 
 ## Penyelesaian
 
-[Penyelesaian](https://github.com/nahdazahra/cloud2018/tree/master/Docker/penyelesaian.md)
+[Sebuah Penyelesaian](https://github.com/nahdazahra/cloud2018/tree/master/Docker/penyelesaian.md)
