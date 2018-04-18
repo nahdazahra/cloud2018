@@ -143,7 +143,7 @@ Untuk lebih jelasnya, dapat dilihat pada ilustrasi di bawah ini
 
     Keterangan:
 
-    * Membuat service database dengan nama ``db`` menggunakan image yang sudah ada di Docker Hub ``mysql:5.7``, serta mengatur seluruh setup environmet mysql, import dump database web, dan setup volume agar storage mysql menjadi persisten dilakukan di **docker compose** (menjawab no. 4)
+    * Membuat service database dengan nama ``db`` menggunakan image yang sudah ada di Docker Hub ``mysql:5.7``, serta mengatur seluruh setup environmet mysql, import dump database web, dan setup volume agar storage mysql menjadi persisten
     * Membuat service 3 node worker dengan nama ``worker1``, ``worker2``, ``worker3`` menggunakan image python flask yang tadi telah dibuat dengan nama ``reservasi-flask-images``
     * Membuat service load balancer dengan nama ``load-balancer`` menggunakan image yang sudah ada di Docker Hub ``nginx:stable-alpine``, serta membuat konfigurasi load balancer dengan nama ``nginx.conf`` sebagai berikut:
 
