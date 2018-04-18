@@ -170,7 +170,7 @@ Untuk lebih jelasnya, dapat dilihat pada ilustrasi di bawah ini
     docker-compose up -d
     ```
 
-    pada level direktori yang sama dengan direktori ``docker-compose.yml``.
+    pada level direktori yang sama dengan direktori ``docker-compose.yml``. Lalu cek dengan menggunakan ``docker ps``.
 
     ![docker-compose](https://github.com/nahdazahra/cloud2018/blob/master/Docker/img/docker-compose.png)
 
