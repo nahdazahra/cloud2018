@@ -1,5 +1,5 @@
 ## Dokumentasi Penyelesaian Tugas Docker
-# Judul
+# Deploy Aplikasi Python Flask menggunakan Docker, Nginx sebagai Load Balancer dan MySQL sebagai Database
 
 Dalam menyelesaikan permasalahan tersebut, ada beberapa langkah langkah yang harus dilakukan. Secara garis besar,
 
@@ -184,3 +184,4 @@ Untuk lebih jelasnya, dapat dilihat pada ilustrasi di bawah ini
 
     ![docker-compose](https://github.com/nahdazahra/cloud2018/blob/master/Docker/img/web-reservasi.png)
 
+YAY SELESAI!
