@@ -3,7 +3,7 @@ FROM ubuntu:16.04
 
 # Install python and dependencies for Flask installation
 RUN apt-get update -y
-RUN apt-get --force-yes upgrade
+RUN apt-get upgrade -y
 RUN apt-get install -y libmysqlclient-dev python-dev python-pip build-essential libssl-dev libffi-dev
 
 WORKDIR ~
