@@ -72,3 +72,6 @@ Membuat sebuah vagrant virtualbox dengan langkah-langkah dan konfigurasi yang te
     ```
 Maka, vagrant akan melakukan instalasi sesuai script pada **installation.sh**
 
+## Script
+
+[Vagrant Load Balancer](blabla)

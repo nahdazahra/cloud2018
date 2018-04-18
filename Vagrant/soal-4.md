@@ -71,3 +71,7 @@ Maka, vagrant akan melakukan instalasi sesuai script pada **installation.sh**
 
 ![Screenshot](img/bind9.png "Status Bind9")
 
+
+## Script
+
+[Vagrant dengan Squid Proxy dan Bind9](https://github.com/nahdazahra/cloud2018/tree/master/Vagrant/vagrant_bind9_squid3)

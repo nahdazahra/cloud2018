@@ -153,3 +153,7 @@ Simpan file **bootstrap.sh**, vagrant akan menjalankan provision sesuai dengan c
     ```bash
     service apache2 restart
     ```
+
+## Script
+
+[Vagrant Load Balancer](https://github.com/nahdazahra/cloud2018/tree/master/Nginx/vagrant_load_balancing)

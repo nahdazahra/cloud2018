@@ -189,3 +189,7 @@ YAY SELESAI!
 Sehingga, isi dari direktori docker kami adalah sebagai berikut:
 
 ![tree-docker](https://github.com/nahdazahra/cloud2018/blob/master/Docker/img/tree-docker.png)
+
+## Script
+
+[Docker](https://github.com/nahdazahra/cloud2018/tree/master/Docker/Docker)
