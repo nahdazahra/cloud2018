@@ -10,7 +10,7 @@ Dalam menyelesaikan permasalahan tersebut, ada beberapa langkah-langkah yang har
 
 Untuk lebih jelasnya, dapat dilihat pada ilustrasi di bawah ini
 
-![ilustrasi](https://github.com/nahdazahra/cloud2018/blob/master/Docker/img/ilustrasi.png)
+![ilustrasi](img/ilustrasi.png)
 
 ## Langkah-langkah
 
@@ -172,7 +172,7 @@ Untuk lebih jelasnya, dapat dilihat pada ilustrasi di bawah ini
 
     pada level direktori yang sama dengan direktori ``docker-compose.yml``. Lalu cek dengan menggunakan ``docker ps``.
 
-    ![docker-compose](https://github.com/nahdazahra/cloud2018/blob/master/Docker/img/docker-compose.png)
+    ![docker-compose](img/docker-compose.png)
 
 5. Cek pada browser
 
@@ -182,10 +182,10 @@ Untuk lebih jelasnya, dapat dilihat pada ilustrasi di bawah ini
     
     Maka akan muncul tampilan web seperti dibawah ini:
 
-    ![docker-compose](https://github.com/nahdazahra/cloud2018/blob/master/Docker/img/web-reservasi.png)
+    ![docker-compose](img/web-reservasi.png)
 
 YAY SELESAI!
 
 Sehingga, isi dari direktori docker kami adalah sebagai berikut:
 
-![tree-docker](https://github.com/nahdazahra/cloud2018/blob/master/Docker/img/tree-docker.png)
+![tree-docker](img/tree-docker.png)
