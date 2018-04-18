@@ -185,3 +185,7 @@ Untuk lebih jelasnya, dapat dilihat pada ilustrasi di bawah ini
     ![docker-compose](https://github.com/nahdazahra/cloud2018/blob/master/Docker/img/web-reservasi.png)
 
 YAY SELESAI!
+
+Sehingga, isi dari direktori docker kami adalah sebagai berikut:
+
+![tree-docker](https://github.com/nahdazahra/cloud2018/blob/master/Docker/img/web-reservasi.png)
