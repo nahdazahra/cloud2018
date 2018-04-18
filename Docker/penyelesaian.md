@@ -15,7 +15,10 @@ Untuk lebih jelasnya, dapat dilihat pada ilustrasi di bawah ini
 ## Langkah-langkah
 
 1. Membuat ``Dockerfile`` untuk custom image container python flask. Nantinya, image ini akan digunakan sebagai Worker.
-
+    
+    ```bash
+    $ vim Dockerfile
+    ```
     ```docker
     # Pull base image
     FROM ubuntu:16.04
