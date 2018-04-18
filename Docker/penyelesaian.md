@@ -10,7 +10,7 @@ Dalam menyelesaikan permasalahan tersebut, ada beberapa langkah langkah yang har
 
 Untuk lebih jelasnya, dapat dilihat pada ilustrasi di bawah ini
 
-![ilustrasi](https://github.com/nahdazahra/cloud2018/tree/master/Docker/img/ilustrasi.png)
+![ilustrasi](https://github.com/nahdazahra/cloud2018/blob/master/Docker/img/ilustrasi.png)
 
 ## Langkah-langkah
 
