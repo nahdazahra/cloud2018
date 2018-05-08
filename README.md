@@ -10,4 +10,6 @@
 1. Tugas 1 : [Vagrant](https://github.com/nahdazahra/cloud2018/tree/master/Vagrant)
 2. Tugas 2 : [Load Balancing](https://github.com/nahdazahra/cloud2018/tree/master/Nginx)
 3. Tugas 3 : [Docker](https://github.com/nahdazahra/cloud2018/tree/master/Docker)
+3. Tugas 4 : [Ansible](https://github.com/nahdazahra/cloud2018/tree/master/Ansible)
+
 ### Final Project : [Cloud Storage](https://github.com/nahdazahra/cloud2018/tree/master/Cloud-Storage)

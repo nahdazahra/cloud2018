@@ -3,7 +3,7 @@ version: '3.3'
 services:
   db:
     image: mysql:5.7
-    restart: always
+    restart: on-failure
     environment:
       MYSQL_ROOT_PASSWORD: buayakecil
       MYSQL_DATABASE: reservasi
@@ -20,7 +20,7 @@ services:
     image: reservasi-flask-images
     depends_on:
       - db
-    restart: always
+    restart: on-failure
     environment: 
       DB_HOST: 10.5.5.5
       DB_USERNAME: userawan
@@ -34,7 +34,7 @@ services:
     image: reservasi-flask-images
     depends_on:
       - db
-    restart: always
+    restart: on-failure
     environment: 
       DB_HOST: 10.5.5.5
       DB_USERNAME: userawan
@@ -48,7 +48,7 @@ services:
     image: reservasi-flask-images
     depends_on:
       - db
-    restart: always
+    restart: on-failure
     environment: 
       DB_HOST: 10.5.5.5
       DB_USERNAME: userawan
