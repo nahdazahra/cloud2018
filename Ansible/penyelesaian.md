@@ -9,11 +9,11 @@ VirtualBox mungkin sudah tidak asing lagi di telinga kita, namun apa itu KVM?
 
 Kami menggunakan Virtual Machine Manager untuk mengatur KVM yang digunakan.
 
-![Virtual Machine Manager](/home/mocatfrio/Documents/cloud2018/Ansible/img/ss1_kvm.png)
+![Virtual Machine Manager](https://github.com/nahdazahra/cloud2018/blob/master/Ansible/img/ss1_kvm.png)
 
 KVM yang telah diinstall Ubuntu 16.04 yang selanjutnya akan digunakan sebagai worker.
 
-![KVM Ubuntu 16.04](/home/mocatfrio/Documents/cloud2018/Ansible/img/ss2_ubuntu1604.png)
+![KVM Ubuntu 16.04](https://github.com/nahdazahra/cloud2018/blob/master/Ansible/img/ss2_ubuntu1604.png)
 
 ## Langkah 2 - Menambahkan Ansible Inventory dan Testing
 
@@ -38,9 +38,9 @@ Dengan asumsi kami sudah menginstall **ansible** dan **sshpass** di PC kami, mak
     
     **[IP VM 1]** dan **[IP VM 2]** diganti dengan IP masing-masing VM Worker.
 
-    ![KVM Worker 1](/home/mocatfrio/Documents/cloud2018/Ansible/img/ss3_ipworker1.png)
+    ![KVM Worker 1](https://github.com/nahdazahra/cloud2018/blob/master/Ansible/img/ss3_ipworker1.png)
 
-    ![KVM Worker 2](/home/mocatfrio/Documents/cloud2018/Ansible/img/ss4_ipworker2.png)
+    ![KVM Worker 2](https://github.com/nahdazahra/cloud2018/blob/master/Ansible/img/ss4_ipworker2.png)
 
     Sehingga, isi file ```hosts``` menjadi seperti ini:
 
@@ -59,7 +59,7 @@ Dengan asumsi kami sudah menginstall **ansible** dan **sshpass** di PC kami, mak
     * parameter **all** : untuk penanda ansible dijalankan di host mana. Parameter **all** bisa diganti dengan nama host.
     * parameter **-k** digunakan untuk menanyakan password login ssh.
 
-    ![Testing](/home/mocatfrio/Documents/cloud2018/Ansible/img/ss5_testing.png)
+    ![Testing](https://github.com/nahdazahra/cloud2018/blob/master/Ansible/img/ss5_testing.png)
 
     Yeay testingnya sukses!
 
@@ -550,17 +550,17 @@ Sehingga jika disatukan, maka playbooknya akan terlihat seperti ini :
 2. Jika error, baca errornya dan perbaiki (tapi insya Allah sudah ndak). Jika sukses, maka lanjutkan testing di browser.
 3. Ketikkan alamat VM Worker di browser, dalam hal ini adalah ```192.168.122.28``` dan ```192.168.122.101```.
 
-![Web 1](link)
+![Web 1](https://github.com/nahdazahra/cloud2018/blob/master/Ansible/img/ss6_web1.png)
 
-![Web 1](link)
+![Web 2](https://github.com/nahdazahra/cloud2018/blob/master/Ansible/img/ss7_web2.png)
 
 YEAY! Berhasil
 
 # Script
 
-![Sebuah script](link)
+![Sebuah script](https://github.com/nahdazahra/cloud2018/tree/master/Ansible/Ansible)
 
-![Tree](link)
+![Tree](https://github.com/nahdazahra/cloud2018/blob/master/Ansible/img/ss8_tree.png)
 
 # Thanks to!
 
@@ -568,4 +568,4 @@ YEAY! Berhasil
 * [Hello Ansible! - Tutorial Ansible](https://knpuniversity.com/screencast/ansible/ansible-intro)
 * [Dokumentasi Laravel](https://laravel.com/docs/5.0)
 
-p.s. Jika ingin lebih paham ansible, bisa belajar lagi dari link di atas karena dijelaskan step-by-step nya secara lebih jelas
+p.s. Jika ingin lebih paham ansible, bisa belajar lagi dari link di atas karena dijelaskan step-by-step nya secara lebih jelas:)))
