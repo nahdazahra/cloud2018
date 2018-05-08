@@ -555,7 +555,7 @@ Sehingga jika disatukan, maka playbooknya akan terlihat seperti ini :
 
     * Jika muak dengan si **cowsay**, matikan saja sapinya dengan cara ```export ANSIBLE_NOCOWS="1"``` 
 
-3. Ketikkan alamat VM Worker di browser, yang dalam hal ini adalah ```192.168.122.28``` dan ```192.168.122.101```.
+3. Ketikkan alamat IP VM Worker di browser, yang dalam hal ini adalah ```192.168.122.28``` dan ```192.168.122.101```.
 
 ![Web 1](https://github.com/nahdazahra/cloud2018/blob/master/Ansible/img/ss6_web1.png)
 
