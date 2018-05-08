@@ -1,196 +1,571 @@
 ## Dokumentasi Penyelesaian Tugas Ansible
-# Deploy Aplikasi Laravel menggunakan Ansible, Nginx sebagai Load Balancer dan MySQL sebagai Database
+# Deploy Aplikasi Laravel 5.6 menggunakan Ansible
 
-Dalam menyelesaikan permasalahan tersebut, ada beberapa langkah-langkah yang harus dilakukan, yaitu: 
+## Langkah 1 - Membuat 3 Virtual Machine
+Membuat 3 VM yang terdiri dari 2 VM Ubuntu 16.04 sebagai Worker dan 1 VM Debian 9 sebagai DB Server. Dalam hal ini, kami menggunakan aplikasi virtualisasi (**hypervisor**) kategori **full virtualization**, yakni VirtualBox dan KVM.
 
-## 1. Membuat 3 Virtual Machine
-Membuat 3 VM yang terdiri dari 2 VM Ubuntu 16.04 sebagai Worker dan 1 VM Debian 9 sebagai DB Server. Dalam hal ini, kami menggunakan aplikasi **hypervisor** kategori full virtualization, yaitu VirtualBox dan KVM.
+VirtualBox mungkin sudah tidak asing lagi di telinga kita, namun apa itu KVM? 
+> Kernel-Based Virtual Machine (KVM) adalah salah satu teknologi virtualisasi (hypervisor) yang dikembangkan oleh Linux.
 
+Kami menggunakan Virtual Machine Manager untuk mengatur KVM yang digunakan.
 
+![Virtual Machine Manager](/home/mocatfrio/Documents/cloud2018/Ansible/img/ss1_kvm.png)
 
-## 2. Membuat 3 Virtual Machine
-Membuat 3 VM yang terdiri dari 2 VM Ubuntu 16.04 sebagai Worker dan 1 VM Debian 9 sebagai DB Server. Dalam hal ini, kami menggunakan aplikasi **hypervisor** kategori full virtualization, yaitu VirtualBox dan KVM.   
+KVM yang telah diinstall Ubuntu 16.04 yang selanjutnya akan digunakan sebagai worker.
 
-1. Membuat ``Dockerfile`` untuk custom image container python flask. Nantinya, image ini akan digunakan sebagai Worker.
-   
-    ```dockerfile
-    # Pull base image
-    FROM ubuntu:16.04
+![KVM Ubuntu 16.04](/home/mocatfrio/Documents/cloud2018/Ansible/img/ss2_ubuntu1604.png)
 
-    # Install python dan dependencies-nya untuk menjalankan aplikasi Flask
-    RUN apt-get update -y
-    RUN apt-get -y upgrade
-    RUN apt-get install -y libmysqlclient-dev python-dev python-pip build-essential libssl-dev libffi-dev
-    RUN apt-get install -y wget apt-utils zip python2.7 
-    RUN pip install --upgrade pip
+## Langkah 2 - Menambahkan Ansible Inventory dan Testing
 
-    # Download Web Reservasi lab yang dibuat menggunakan python flask
-    RUN wget https://cloud.fathoniadi.my.id/reservasi.zip 
-    RUN unzip reservasi.zip
-    RUN mv reservasi reservasi-flask
+Dengan asumsi kami sudah menginstall **ansible** dan **sshpass** di PC kami, maka kami melakukan langkah-langkah berikut:
 
-    # Berpindah direktori 
-    WORKDIR reservasi-flask
+1. Membuat folder **Ansible** dan pindah ke dalam folder tersebut.
 
-    # Install dependencies untuk web flask
-    RUN pip install -r req.txt
-
-    # Menjalankan python saat docker dijalankan
-    ENTRYPOINT ["python"]
-
-    # Menjalankan server.py
-    CMD ["server.py"]
-
-    # Port 80
-    EXPOSE 80
+    ```bash
+    mkdir Ansible
+    cd Ansible/
     ```
-2. Jangan lupa melakukan **build** untuk membuat imagenya.
+2. Membuat file **hosts** sebagai **file ansible inventory**.
+    ```
+    nano hosts
+    ```
+    dengan isi sebagai berikut:
+
+    ```
+    worker1 ansible_host=[IP VM 1] ansible_ssh_user=cloud ansible_become_pass=raincloud123!
+    worker2 ansible_host=[IP VM 2] ansible_ssh_user=cloud ansible_become_pass=raincloud123!
+    ```
     
-    ```docker
-    docker build -t reservasi-flask-images ./
-    ```
+    **[IP VM 1]** dan **[IP VM 2]** diganti dengan IP masing-masing VM Worker.
 
-3. Karena image container **nginx** dan **mysql** menggunakan image container yang sudah jadi dan ada di Docker Hub, maka kami langsung membuat ``docker-compose.yml``.
+    ![KVM Worker 1](/home/mocatfrio/Documents/cloud2018/Ansible/img/ss3_ipworker1.png)
+
+    ![KVM Worker 2](/home/mocatfrio/Documents/cloud2018/Ansible/img/ss4_ipworker2.png)
+
+    Sehingga, isi file ```hosts``` menjadi seperti ini:
+
+    ```
+    worker1 ansible_host=192.168.122.28 ansible_ssh_user=cloud ansible_become_pass=raincloud123!
+    worker2 ansible_host=192.168.122.101 ansible_ssh_user=cloud ansible_become_pass=raincloud123!
+    ```
+3. Kemudian jalankan perintah dibawah untuk testing (dalam hal ini, testingnya berupa ping).
+
+    ```
+    ansible -i ./hosts -m ping all -k
+    ```
+    Keterangan:
+    * parameter **-i** : untuk men-declare ansible inventory.
+    * parameter **-m** : untuk men-declare module command (dalam hal ini adalah command **ping**).
+    * parameter **all** : untuk penanda ansible dijalankan di host mana. Parameter **all** bisa diganti dengan nama host.
+    * parameter **-k** digunakan untuk menanyakan password login ssh.
+
+    ![Testing](/home/mocatfrio/Documents/cloud2018/Ansible/img/ss5_testing.png)
+
+    Yeay testingnya sukses!
+
+## Langkah 3 - Grouping Host
+
+Membuka file ```hosts``` dan menambahkan nama group dalam tanda **[]**. Dalam hal ini, kami memberi nama group **Worker**.
+
+    ```
+    [worker]
+    worker1 ansible_host=192.168.122.28 ansible_ssh_user=cloud ansible_become_pass=raincloud123!
+    worker2 ansible_host=192.168.122.101 ansible_ssh_user=cloud ansible_become_pass=raincloud123!
+    ```
+## Langkah 4 - Instalasi Software Pendukung
+
+Software yang dibutuhkan untuk menjalankan Aplikasi Laravel 5.6 adalah:
+
+    * Nginx
+    * PHP 7.2
+    * Composer
+    * Git
+
+Seluruh software tersebut akan diinstall pada hosts **Worker** menggunakan file **yml**. Dalam dunia per-ansible-an, kita menyebutnya sebagai **playbook**.
+
+1. Membuat playbook baru bernama **laravel.yml**.
+
+    ```
+    nano laravel.yml
+    ```
+2. Menuliskan script berikut:
 
     ```yml
-    version: '3.3'
+    ---
+    - hosts: worker
+    tasks:
+        
+        # INSTALL YG DIBUTUHKAN SELAIN PHP
+        - name: Install Nginx, Git, Zip, Unzip, dll
+        become: true
+        apt:
+            name: "{{ item }}"
+            state: latest
+            update_cache: true
+        with_items:
+            - nginx
+            - git
+            - python-software-properties
+            - software-properties-common
+            - zip
+            - unzip
+        notify:
+            - Stop nginx
+            - Start nginx
 
-    services:
-        db:
-            image: mysql:5.7
-            restart: always
-            environment:
-                MYSQL_ROOT_PASSWORD: buayakecil
-                MYSQL_DATABASE: reservasi
-                MYSQL_USER: userawan
-                MYSQL_PASSWORD: buayakecil
-            volumes:
-                - ./reservasi:/docker-entrypoint-initdb.d
-                - dbdata:/var/lib/mysql
-            networks:
-                ip-docker:
-                    ipv4_address: 10.5.5.5
+        # INSTALL PHP 7.2
+        - name: Tambah PHP 7 PPA Repository
+        become: true
+        apt_repository:
+            repo: 'ppa:ondrej/php'
+            update_cache: true
 
-        worker1:
-            image: reservasi-flask-images
-            depends_on:
-                - db
-            restart: always
-            environment: 
-                DB_HOST: 10.5.5.5
-                DB_USERNAME: userawan
-                DB_PASSWORD: buayakecil
-                DB_NAME: reservasi
-            networks:
-                ip-docker:
-                    ipv4_address: 10.5.5.10
+        - name: Install PHP 7.2 Packages
+        become: yes
+        apt: 
+            name: "{{ item }}"
+            state: latest
+        with_items:
+            - php7.2
+            - php-pear
+            - php7.2-curl
+            - php7.2-dev
+            - php7.2-gd
+            - php7.2-mbstring
+            - php7.2-zip
+            - php7.2-mysql
+            - php7.2-xml
+            - php7.2-intl
+            - php7.2-json
+            - php7.2-cli
+            - php7.2-common
+            - php7.2-fpm
+        notify:
+            - Restart PHP-fpm
 
-        worker2:
-            image: reservasi-flask-images
-            depends_on:
-                - db
-            restart: always
-            environment: 
-                DB_HOST: 10.5.5.5
-                DB_USERNAME: userawan
-                DB_PASSWORD: buayakecil
-                DB_NAME: reservasi
-            networks:
-                ip-docker:
-                    ipv4_address: 10.5.5.11
+    handlers:
+        - name: Restart nginx
+        become: true
+        service:
+            name: nginx
+            state: restarted
 
-        worker3:
-            image: reservasi-flask-images
-            depends_on:
-                - db
-            restart: always
-            environment:
-                DB_HOST: 10.5.5.5
-                DB_USERNAME: userawan
-                DB_PASSWORD: buayakecil
-                DB_NAME: reservasi
-            networks:
-                ip-docker:
-                    ipv4_address: 10.5.5.12
+        - name: Stop nginx
+        become: true
+        service:
+            name: nginx
+            state: stopped
+
+        - name: Start nginx
+        become: true
+        service:
+            name: nginx
+            state: started
+
+        - name: Restart PHP-fpm
+        become: true
+        service:
+            name: php7.2-fpm
+            state: restarted
+    ```
+    Keterangan:
     
-        load-balancer:
-            image: nginx:stable-alpine
-            depends_on:
-                - worker1
-                - worker2
-                - worker3
-            volumes:
-                - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
-            ports:
-                - 1998:80
-            networks: 
-                ip-docker:
-                    ipv4_address: 10.5.5.6
+    * Variable ```item``` yang berada dalam tanda **jinja** "{{ }}" digantikan dengan ```with_items```. 
+    * **Zip** dan **unzip** diinstall karena kedepannya akan digunakan untuk menginstall Composer supaya prosesnya lebih cepat.
+    * Proses menginstall **PHP 7.2** adalah harus terlebih dulu menginstall ```python-software-properties```, menambah repo, kemudian baru bisa menginstall php 7.2 beserta packages2nya.
+    * ```Handlers``` digunakan untuk meng-handle hal-hal yang ada dalam modul ```notify```. Biasanya terkait dengan **restart service**. Kami sertakan pula **stop** dan **start** hanya untuk sekadar jaga-jaga.
 
-    volumes:
-        dbdata:
+## Langkah 5 - Clone Git yang Berisi Aplikasi Laravel
 
-    networks: 
-        ip-docker:
-            driver: bridge
-            ipam: 
-                config:
-                    - subnet: 10.5.5.0/24
+Membuka ```laravel.yml``` dan memasukkan script berikut:
+
+```yml
+    # CLONE GIT
+    - name: Bikin direktori
+      become: true
+      file:
+        path: "{{ laravel_root_dir }}"
+        state: directory
+        owner: "{{ ansible_ssh_user }}"
+        group: "{{ ansible_ssh_user }}"
+        recurse: yes
+
+    - name: Clone git
+      git:
+        dest: "{{ laravel_root_dir }}"
+        repo: https://github.com/udinIMM/Hackathon.git
+        force: yes
+```
+Keterangan:
+
+* Variable ```laravel_root_dir``` diganti dengan ```/var/www/laravel``` yang nantinya akan di-declare di modul ```vars```.
+* Variable ```ansible_ssh_user``` diganti sesuai dengan yang ada pada file ```hosts```, dalam soal ini adalah ```cloud```.
+
+## Langkah 6 - Instalasi Composer dan Setting Environment Laravel
+
+1. Membuka ```laravel.yml``` dan memasukkan script berikut:
+
+    ```yml
+        # INSTALL COMPOSER
+        - name: Download Composer
+        script: scripts/install_composer.sh
+
+        - name: Setting composer jadi global
+        become: true
+        command: mv composer.phar /usr/local/bin/composer
+
+        - name: Set permission composer
+        become: true
+        file:
+            path: /usr/local/bin/composer
+            mode: "a+x"
+
+        - name: Install dependencies laravel
+        composer:
+            working_dir: "{{ laravel_root_dir }}"
+            no_dev: no
+        
+        # SETTING ENVIRONMENT
+        - name: Bikin .env
+        command: cp "{{ laravel_root_dir }}/.env.example" "{{ laravel_root_dir }}/.env"
+        
+        - name: php artisan key generate
+        command: php "{{ laravel_root_dir }}/artisan" key:generate
+
+        - name: php artisan clear cache
+        command: php "{{ laravel_root_dir }}/artisan" cache:clear
+        
+        - name: set APP_DEBUG=false
+        lineinfile: 
+            dest: "{{ laravel_root_dir }}/.env"
+            regexp: '^APP_DEBUG='
+            line: APP_DEBUG=false
+
+        - name: set APP_ENV=production
+        lineinfile: 
+            dest: "{{ laravel_root_dir }}/.env"
+            regexp: '^APP_ENV='
+            line: APP_ENV=production
+
+        - name: Ganti permission bootstrap/cache directory
+        file:
+            path: "{{ laravel_cache_dir }}"
+            state: directory
+            mode: "a+x"
+
+        - name: Ganti permission vendor directory
+        command: chmod -R 777 "{{ laravel_vendor_dir }}"
+
+        - name: Ganti permission storage directory
+        command: chmod -R 777 "{{ laravel_storage_dir }}" 
+    ```
+    Keterangan:
+
+    * Kami menginstall **Composer** menggunakan script yang disimpan dalam ```scripts/install_composer.sh```.
+    * Variable ```laravel_cache_dir``` diganti dengan ```/var/www/laravel/bootstrap/cache``` yang nantinya akan di-declare di modul ```vars```.
+    * Variable ```laravel_vendor_dir``` diganti dengan ```/var/www/laravel/vendor``` yang nantinya akan di-declare di modul ```vars```.
+    * Variable ```laravel_storage_dir``` diganti dengan ```/var/www/laravel/storage``` yang nantinya akan di-declare di modul ```vars```.
+    
+2. Membuat file ```install_composer.sh``` dalam folder ```scripts```.
+
+    ```bash
+    mkdir scripts
+    cd scripts/
+    nano install_composer.sh
+    ```
+    dan isikan script berikut:
+    
+    ```bash
+    #!/bin/sh
+
+    EXPECTED_SIGNATURE=$(wget -q -O - https://composer.github.io/installer.sig)
+    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+    ACTUAL_SIGNATURE=$(php -r "echo hash_file('SHA384', 'composer-setup.php');")
+
+    if [ "$EXPECTED_SIGNATURE" != "$ACTUAL_SIGNATURE" ]
+    then
+        >&2 echo 'ERROR: Invalid installer signature'
+        rm composer-setup.php
+        exit 1
+    fi
+
+    php composer-setup.php --quiet
+    RESULT=$?
+    rm composer-setup.php
+    exit $RESULT
+    ```
+
+## Langkah 7 - Konfigurasi Nginx
+
+1. Membuat file konfigurasi nginx bernama ```nginx.conf``` dalam folder ```templates```.
+
+    ```bash
+    mkdir templates
+    cd templates/
+    nano nginx.conf
+    ```
+    dan isikan config sebagai berikut
+
+    ```nginx
+    server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        
+        root {{ laravel_web_dir }};
+
+        index index.php;
+
+        server_name {{ inventory_hostname }};
+
+        location / {
+            try_files $uri $uri/ =404;
+        }
+
+        location ~ \.php$ {
+            try_files $uri /index.php =404;
+            fastcgi_split_path_info ^(.+\.php)(/.+)$;
+            fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+            fastcgi_index index.php;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            include fastcgi_params;
+        }
+
+        error_log /var/log/nginx/{{ inventory_hostname }}_error.log;
+        access_log /var/log/nginx/{{ inventory_hostname }}_access.log;
+    }
     ```
 
     Keterangan:
 
-    * Membuat service database dengan nama ``db`` menggunakan image yang sudah ada di Docker Hub ``mysql:5.7``, serta mengatur seluruh setup environmet mysql, import dump database web, dan setup volume agar storage mysql menjadi persisten
-    * Membuat service 3 node worker dengan nama ``worker1``, ``worker2``, ``worker3`` menggunakan image python flask yang tadi telah dibuat dengan nama ``reservasi-flask-images``
-    * Membuat service load balancer dengan nama ``load-balancer`` menggunakan image yang sudah ada di Docker Hub ``nginx:stable-alpine``, serta membuat konfigurasi load balancer dengan nama ``nginx.conf`` sebagai berikut:
+    * Variable ```laravel_web_dir``` diganti dengan ```/var/www/laravel/public``` yang nantinya akan di-declare di modul ```vars```.
+    * Variable ```inventory_hostname``` diganti sesuai dengan yang ada pada file ```hosts```, dalam soal ini contohnya ```worker1``` dan ```worker2```.
 
-        ```conf
-        upstream worker {
-            server 10.5.5.10;
-            server 10.5.5.11;
-            server 10.5.5.12;
-        }
+2. Kemudian membuka ```laravel.yml``` dan memasukkan script berikut:
 
-        server {
-            listen  80 default_server;
-            location / {
-                proxy_pass http://worker;
-            }
-        }
-        ```
-
-    * Masing masing container diberi IP statis untuk mempermudah.
-
-4. Jalankan ``docker-compose.yml`` dengan melakukan perintah
-
+    ```yml
+        # CONFIG NGINX
+        - name: Configure Nginx
+          become: true
+          template:
+            src: templates/nginx.conf
+            dest: "{{ nginx_conf_dir }}/sites-enabled/default"
+          notify:
+            - Restart nginx
+            - Restart PHP-fpm
     ```
-    docker-compose up -d
-    ```
+## Langkah 8 - Mendeclare Vars
 
-    pada level direktori yang sama dengan direktori ``docker-compose.yml``. Lalu cek dengan menggunakan ``docker ps``.
+Membuka ```laravel.yml``` dan memasukkan script berikut:
 
-    ![docker-compose](img/docker-compose.png)
+```yml
+vars:
+    laravel_root_dir: /var/www/laravel
+    laravel_web_dir: "{{ laravel_root_dir }}/public"
+    laravel_cache_dir: "{{ laravel_root_dir }}/bootstrap/cache"
+    laravel_vendor_dir: "{{ laravel_root_dir }}/vendor"
+    laravel_storage_dir: "{{ laravel_root_dir }}/storage"
+    nginx_conf_dir: /etc/nginx
+```
+dibawah modul ```Hosts``` paling awal. ```Vars``` digunakan untuk mendeclare seluruh variable yang digunakan didalam script.
 
-5. Cek pada browser
+## Langkah 9 - Menyatukan Playbook
 
-    ```
-    localhost:1998
-    ```
+Sehingga jika disatukan, maka playbooknya akan terlihat seperti ini :
+
+```yml
+---
+- hosts: worker
+
+  vars:
+    laravel_root_dir: /var/www/laravel
+    laravel_web_dir: "{{ laravel_root_dir }}/public"
+    laravel_cache_dir: "{{ laravel_root_dir }}/bootstrap/cache"
+    laravel_vendor_dir: "{{ laravel_root_dir }}/vendor"
+    laravel_storage_dir: "{{ laravel_root_dir }}/storage"
+    nginx_conf_dir: /etc/nginx
+
+  tasks:
+
+    # INSTALL YG DIBUTUHKAN SELAIN PHP
+    - name: Install Nginx, Git, Zip, Unzip, dll
+      become: true
+      apt:
+        name: "{{ item }}"
+        state: latest
+        update_cache: true
+      with_items:
+        - nginx
+        - git
+        - python-software-properties
+        - software-properties-common
+        - zip
+        - unzip
+      notify: 
+        - Stop nginx
+        - Start nginx
+
+    # INSTALL PHP 7.2
+    - name: Tambah PHP 7 PPA Repository
+      become: true
+      apt_repository:
+        repo: 'ppa:ondrej/php' 
+        update_cache: true
+
+    - name: Install PHP 7.2 Packages
+      become: yes
+      apt: 
+        name: "{{ item }}"
+        state: latest
+      with_items:
+        - php7.2
+        - php-pear
+        - php7.2-curl
+        - php7.2-dev
+        - php7.2-gd
+        - php7.2-mbstring
+        - php7.2-zip
+        - php7.2-mysql
+        - php7.2-xml
+        - php7.2-intl
+        - php7.2-json
+        - php7.2-cli
+        - php7.2-common
+        - php7.2-fpm
+      notify: 
+        - Restart PHP-fpm
     
-    Maka akan muncul tampilan web seperti dibawah ini:
+    # CLONE GIT
+    - name: Bikin direktori
+      become: true
+      file:
+          path: "{{ laravel_root_dir }}"
+          state: directory
+          owner: "{{ ansible_ssh_user }}"
+          group: "{{ ansible_ssh_user }}"
+          recurse: yes
 
-    ![docker-compose](img/web-reservasi.png)
+    - name: Clone git
+      git:
+        dest: "{{ laravel_root_dir }}"
+        repo: https://github.com/udinIMM/Hackathon.git
+        force: yes
 
-YAY SELESAI!
+    # INSTALL COMPOSER
+    - name: Download Composer
+      script: scripts/install_composer.sh
 
-Sehingga, isi dari direktori docker kami adalah sebagai berikut:
+    - name: Setting composer jadi global
+      become: true
+      command: mv composer.phar /usr/local/bin/composer
 
-<<<<<<< HEAD
-![tree-docker](img/tree-docker.png)
-=======
-![tree-docker](https://github.com/nahdazahra/cloud2018/blob/master/Docker/img/tree-docker.png)
+    - name: Set permission composer
+      become: true
+      file:
+        path: /usr/local/bin/composer
+        mode: "a+x"
 
-## Script
+    - name: Install dependencies laravel
+      composer:
+        working_dir: "{{ laravel_root_dir }}"
+        no_dev: no
+    
+    # SETTING ENVIRONMENT
+    - name: Bikin .env
+      command: cp "{{ laravel_root_dir }}/.env.example" "{{ laravel_root_dir }}/.env"
+    
+    - name: php artisan key generate
+      command: php "{{ laravel_root_dir }}/artisan" key:generate
 
-[Docker](https://github.com/nahdazahra/cloud2018/tree/master/Docker/Docker)
->>>>>>> 711677ddab4c9c4d0feeb8e2b1bf9c9f7b6618f4
+    - name: php artisan clear cache
+      command: php "{{ laravel_root_dir }}/artisan" cache:clear
+    
+    - name: set APP_DEBUG=false
+      lineinfile: 
+        dest: "{{ laravel_root_dir }}/.env"
+        regexp: '^APP_DEBUG='
+        line: APP_DEBUG=false
+
+    - name: set APP_ENV=production
+      lineinfile: 
+        dest: "{{ laravel_root_dir }}/.env"
+        regexp: '^APP_ENV='
+        line: APP_ENV=production
+
+    - name: Ganti permission bootstrap/cache directory
+      file:
+        path: "{{ laravel_cache_dir }}"
+        state: directory
+        mode: "a+x"
+
+    - name: Ganti permission vendor directory
+      command: chmod -R 777 "{{ laravel_vendor_dir }}"
+
+    - name: Ganti permission storage directory
+      command: chmod -R 777 "{{ laravel_storage_dir }}"
+    
+    # CONFIG NGINX
+    - name: Configure Nginx
+      become: true
+      template:
+        src: templates/nginx.conf
+        dest: "{{ nginx_conf_dir }}/sites-enabled/default"
+      notify:
+        - Restart nginx
+        - Restart PHP-fpm
+
+  handlers:
+    - name: Restart nginx
+      become: true
+      service: 
+        name: nginx
+        state: restarted
+
+    - name: Stop nginx
+      become: true
+      service: 
+        name: nginx
+        state: stopped
+
+    - name: Start nginx
+      become: true
+      service: 
+        name: nginx
+        state: started
+
+    - name: Restart PHP-fpm
+      become: true
+      service: 
+        name: php7.2-fpm
+        state: restarted
+```
+
+## Langkah 10 - TESTING BROH!
+
+1. Jalankan perintah
+
+    ```
+    ansible-playbook -i hosts laravel.yml -k
+    ```
+
+2. Jika error, baca errornya dan perbaiki (tapi insya Allah sudah ndak). Jika sukses, maka lanjutkan testing di browser.
+3. Ketikkan alamat VM Worker di browser, dalam hal ini adalah ```192.168.122.28``` dan ```192.168.122.101```.
+
+![Web 1](link)
+
+![Web 1](link)
+
+YEAY! Berhasil
+
+# Script
+
+![Sebuah script](link)
+
+![Tree](link)
+
+# Thanks to!
+
+* [How To Deploy a Basic PHP Application Using Ansible on Ubuntu 14.04](https://www.digitalocean.com/community/tutorials/how-to-deploy-a-basic-php-application-using-ansible-on-ubuntu-14-04#step-7-%E2%80%94-configuring-nginx)
+* [Hello Ansible! - Tutorial Ansible](https://knpuniversity.com/screencast/ansible/ansible-intro)
+* [Dokumentasi Laravel](https://laravel.com/docs/5.0)
+
+p.s. Jika ingin lebih paham ansible, bisa belajar lagi dari link di atas karena dijelaskan step-by-step nya secara lebih jelas

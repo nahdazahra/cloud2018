@@ -1,0 +1,164 @@
+---
+- hosts: worker
+
+  vars:
+    laravel_root_dir: /var/www/laravel
+    laravel_web_dir: "{{ laravel_root_dir }}/public"
+    laravel_cache_dir: "{{ laravel_root_dir }}/bootstrap/cache"
+    laravel_vendor_dir: "{{ laravel_root_dir }}/vendor"
+    laravel_storage_dir: "{{ laravel_root_dir }}/storage"
+    nginx_conf_dir: /etc/nginx
+
+  tasks:
+
+    # INSTALL YG DIBUTUHKAN SELAIN PHP
+    - name: Install Nginx, Git, Zip, Unzip, dll
+      become: true
+      apt:
+        name: "{{ item }}"
+        state: latest
+        update_cache: true
+      with_items:
+        - nginx
+        - git
+        - python-software-properties
+        - software-properties-common
+        - zip
+        - unzip
+      notify: 
+        - Stop nginx
+        - Start nginx
+
+    # INSTALL PHP 7.2
+    - name: Tambah PHP 7 PPA Repository
+      become: true
+      apt_repository:
+        repo: 'ppa:ondrej/php' 
+        update_cache: true
+
+    - name: Install PHP 7.2 Packages
+      become: yes
+      apt: 
+        name: "{{ item }}"
+        state: latest
+      with_items:
+        - php7.2
+        - php-pear
+        - php7.2-curl
+        - php7.2-dev
+        - php7.2-gd
+        - php7.2-mbstring
+        - php7.2-zip
+        - php7.2-mysql
+        - php7.2-xml
+        - php7.2-intl
+        - php7.2-json
+        - php7.2-cli
+        - php7.2-common
+        - php7.2-fpm
+      notify: 
+        - Restart PHP-fpm
+    
+    # CLONE GIT
+    - name: Bikin direktori
+      become: true
+      file:
+          path: "{{ laravel_root_dir }}"
+          state: directory
+          owner: "{{ ansible_ssh_user }}"
+          group: "{{ ansible_ssh_user }}"
+          recurse: yes
+
+    - name: Clone git
+      git:
+        dest: "{{ laravel_root_dir }}"
+        repo: https://github.com/udinIMM/Hackathon.git
+        force: yes
+
+    # INSTALL COMPOSER
+    - name: Download Composer
+      script: scripts/install_composer.sh
+
+    - name: Setting composer jadi global
+      become: true
+      command: mv composer.phar /usr/local/bin/composer
+
+    - name: Set permission composer
+      become: true
+      file:
+        path: /usr/local/bin/composer
+        mode: "a+x"
+
+    - name: Install dependencies laravel
+      composer:
+        working_dir: "{{ laravel_root_dir }}"
+        no_dev: no
+    
+    # SETTING ENVIRONMENT
+    - name: Bikin .env
+      command: cp "{{ laravel_root_dir }}/.env.example" "{{ laravel_root_dir }}/.env"
+    
+    - name: php artisan key generate
+      command: php "{{ laravel_root_dir }}/artisan" key:generate
+
+    - name: php artisan clear cache
+      command: php "{{ laravel_root_dir }}/artisan" cache:clear
+    
+    - name: set APP_DEBUG=false
+      lineinfile: 
+        dest: "{{ laravel_root_dir }}/.env"
+        regexp: '^APP_DEBUG='
+        line: APP_DEBUG=false
+
+    - name: set APP_ENV=production
+      lineinfile: 
+        dest: "{{ laravel_root_dir }}/.env"
+        regexp: '^APP_ENV='
+        line: APP_ENV=production
+
+    - name: Ganti permission bootstrap/cache directory
+      file:
+        path: "{{ laravel_cache_dir }}"
+        state: directory
+        mode: "a+x"
+
+    - name: Ganti permission vendor directory
+      command: chmod -R 777 "{{ laravel_vendor_dir }}"
+
+    - name: Ganti permission storage directory
+      command: chmod -R 777 "{{ laravel_storage_dir }}"
+    
+    # CONFIG NGINX
+    - name: Configure Nginx
+      become: true
+      template:
+        src: templates/nginx.conf
+        dest: "{{ nginx_conf_dir }}/sites-enabled/default"
+      notify:
+        - Restart nginx
+        - Restart PHP-fpm
+
+  handlers:
+    - name: Restart nginx
+      become: true
+      service: 
+        name: nginx
+        state: restarted
+
+    - name: Stop nginx
+      become: true
+      service: 
+        name: nginx
+        state: stopped
+
+    - name: Start nginx
+      become: true
+      service: 
+        name: nginx
+        state: started
+
+    - name: Restart PHP-fpm
+      become: true
+      service: 
+        name: php7.2-fpm
+        state: restarted

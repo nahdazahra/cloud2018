@@ -6,8 +6,12 @@
 
 1. Buat 3 VM, 2 Ubuntu 16.04 sebagai worker, 1 Debian 9 sebagai DB server
 
-2. Pada vm Debian install Mysql dan setup agar koneksi DB bisa diremote dan memiliki user: username: regal password: bolaubi
-
+2. Pada vm Debian install Mysql dan setup agar koneksi DB bisa diremote dan memiliki user:
+    
+    ```
+    username: regal
+    password: bolaubi
+    ```
 3. Pada worker:
     * 2.1. Install Nginx 
     * 2.2. Install PHP 7.2
