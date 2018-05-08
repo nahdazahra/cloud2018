@@ -94,39 +94,39 @@ Seluruh software tersebut akan diinstall pada hosts **worker** menggunakan file 
     ```yml
     ---
     - hosts: worker
-    tasks:
+      tasks:
         
         # INSTALL YG DIBUTUHKAN SELAIN PHP
         - name: Install Nginx, Git, Zip, Unzip, dll
-        become: true
-        apt:
+          become: true
+          apt:
             name: "{{ item }}"
             state: latest
             update_cache: true
-        with_items:
+          with_items:
             - nginx
             - git
             - python-software-properties
             - software-properties-common
             - zip
             - unzip
-        notify:
+          notify:
             - Stop nginx
             - Start nginx
 
         # INSTALL PHP 7.2
         - name: Tambah PHP 7 PPA Repository
-        become: true
-        apt_repository:
+          become: true
+          apt_repository:
             repo: 'ppa:ondrej/php'
             update_cache: true
 
         - name: Install PHP 7.2 Packages
-        become: yes
-        apt: 
+          become: yes
+          apt: 
             name: "{{ item }}"
             state: latest
-        with_items:
+          with_items:
             - php7.2
             - php-pear
             - php7.2-curl
@@ -141,31 +141,31 @@ Seluruh software tersebut akan diinstall pada hosts **worker** menggunakan file 
             - php7.2-cli
             - php7.2-common
             - php7.2-fpm
-        notify:
+          notify:
             - Restart PHP-fpm
 
     handlers:
         - name: Restart nginx
-        become: true
-        service:
+          become: true
+          service:
             name: nginx
             state: restarted
 
         - name: Stop nginx
-        become: true
-        service:
+          become: true
+          service:
             name: nginx
             state: stopped
 
         - name: Start nginx
-        become: true
-        service:
+          become: true
+          service:
             name: nginx
             state: started
 
         - name: Restart PHP-fpm
-        become: true
-        service:
+          become: true
+          service:
             name: php7.2-fpm
             state: restarted
     ```
@@ -542,13 +542,18 @@ Sehingga jika disatukan, maka playbooknya akan terlihat seperti ini :
 
 ## Langkah 10 - TESTING BROH!
 
-1. Jalankan perintah
+1. Menjalankan perintah
 
     ```
     ansible-playbook -i hosts laravel.yml -k
     ```
 
-2. Jika error, baca errornya dan perbaiki (tapi insya Allah sudah ndak). Jika sukses, maka lanjutkan testing di browser.
+2. Jika error, baca errornya dan perbaiki (tapi insya Allah sudah ndak, oh mungkin indentasinya). Jika sukses, maka lanjutkan testing di browser.
+
+    Keterangan:
+
+    * Jika muak dengan si **cowsay**, matikan saja sapinya dengan cara ```export ANSIBLE_NOCOWS="1"``` 
+
 3. Ketikkan alamat VM Worker di browser, dalam hal ini adalah ```192.168.122.28``` dan ```192.168.122.101```.
 
 ![Web 1](https://github.com/nahdazahra/cloud2018/blob/master/Ansible/img/ss6_web1.png)
@@ -569,4 +574,4 @@ YEAY! Berhasil
 * [Hello Ansible! - Tutorial Ansible](https://knpuniversity.com/screencast/ansible/ansible-intro)
 * [Dokumentasi Laravel](https://laravel.com/docs/5.0)
 
-p.s. Jika ingin lebih paham ansible, bisa belajar lagi dari link di atas karena dijelaskan step-by-step nya secara lebih jelas:)))
+p.s. Jika ingin lebih paham ansible, bisa belajar lagi dari link di atas karena dijelaskan step-by-step nya secara lebih ditel
