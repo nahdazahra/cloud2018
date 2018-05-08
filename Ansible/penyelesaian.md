@@ -565,7 +565,7 @@ YEAY! Berhasil
 
 # Script
 
-![Sebuah script](https://github.com/nahdazahra/cloud2018/tree/master/Ansible/Ansible)
+[Sebuah script](https://github.com/nahdazahra/cloud2018/tree/master/Ansible/Ansible)
 
 ![Tree](https://github.com/nahdazahra/cloud2018/blob/master/Ansible/img/ss8_tree.png)
 
