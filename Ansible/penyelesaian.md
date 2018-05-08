@@ -2,20 +2,21 @@
 # Deploy Aplikasi Laravel 5.6 menggunakan Ansible
 
 ## Langkah 1 - Membuat 3 Virtual Machine
-Membuat 3 VM yang terdiri dari 2 VM Ubuntu 16.04 sebagai Worker dan 1 VM Debian 9 sebagai DB Server. Dalam hal ini, kami menggunakan aplikasi virtualisasi (**hypervisor**) kategori **full virtualization**, yakni VirtualBox dan KVM.
+3 VM terdiri dari 2 VM Ubuntu 16.04 sebagai Worker dan 1 VM Debian 9 sebagai DB Server. Dalam hal ini, kami menggunakan aplikasi virtualisasi (**hypervisor**) kategori **full virtualization**, yakni VirtualBox dan KVM.
 
-VirtualBox mungkin sudah tidak asing lagi di telinga kita, namun apa itu KVM? 
+VirtualBox mungkin sudah tidak asing lagi di telinga kita, namun apa itu KVM?
+
 > Kernel-Based Virtual Machine (KVM) adalah salah satu teknologi virtualisasi (hypervisor) yang dikembangkan oleh Linux.
-
-Kami menggunakan Virtual Machine Manager untuk mengatur KVM yang digunakan.
 
 ![Virtual Machine Manager](https://github.com/nahdazahra/cloud2018/blob/master/Ansible/img/ss1_kvm.png)
 
-KVM yang telah diinstall Ubuntu 16.04 yang selanjutnya akan digunakan sebagai worker.
+Kami menggunakan Virtual Machine Manager untuk mengatur KVM yang digunakan.
 
 ![KVM Ubuntu 16.04](https://github.com/nahdazahra/cloud2018/blob/master/Ansible/img/ss2_ubuntu1604.png)
 
-## Langkah 2 - Menambahkan Ansible Inventory dan Testing
+KVM yang telah diinstall Ubuntu 16.04 yang selanjutnya akan digunakan sebagai worker.
+
+## Langkah 2 - Menambahkan Ansible Inventory
 
 Dengan asumsi kami sudah menginstall **ansible** dan **sshpass** di PC kami, maka kami melakukan langkah-langkah berikut:
 
@@ -48,7 +49,7 @@ Dengan asumsi kami sudah menginstall **ansible** dan **sshpass** di PC kami, mak
     worker1 ansible_host=192.168.122.28 ansible_ssh_user=cloud ansible_become_pass=raincloud123!
     worker2 ansible_host=192.168.122.101 ansible_ssh_user=cloud ansible_become_pass=raincloud123!
     ```
-3. Kemudian jalankan perintah dibawah untuk testing (dalam hal ini, testingnya berupa ping).
+3. Kemudian jalankan perintah dibawah untuk ping VM.
 
     ```
     ansible -i ./hosts -m ping all -k
@@ -61,7 +62,7 @@ Dengan asumsi kami sudah menginstall **ansible** dan **sshpass** di PC kami, mak
 
     ![Testing](https://github.com/nahdazahra/cloud2018/blob/master/Ansible/img/ss5_testing.png)
 
-    Yeay testingnya sukses!
+    Yeay ping-nya sukses!
 
 ## Langkah 3 - Grouping Host
 
@@ -305,7 +306,7 @@ Keterangan:
     cd templates/
     nano nginx.conf
     ```
-    dan isikan config sebagai berikut
+    dan mengisikan config sebagai berikut
 
     ```nginx
     server {
@@ -339,7 +340,7 @@ Keterangan:
     Keterangan:
 
     * Variable ```laravel_web_dir``` diganti dengan ```/var/www/laravel/public``` yang nantinya akan di-declare di modul ```vars```.
-    * Variable ```inventory_hostname``` diganti sesuai dengan yang ada pada file ```hosts```, dalam soal ini contohnya ```worker1``` dan ```worker2```.
+    * Variable ```inventory_hostname``` diganti sesuai dengan yang ada pada file ```hosts``` yang dalam hal ini adalah ```worker1``` dan ```worker2```.
 
 2. Kemudian membuka ```laravel.yml``` dan memasukkan script berikut:
 
@@ -367,7 +368,7 @@ vars:
     laravel_storage_dir: "{{ laravel_root_dir }}/storage"
     nginx_conf_dir: /etc/nginx
 ```
-dibawah modul ```Hosts``` paling awal. ```Vars``` digunakan untuk mendeclare seluruh variable yang digunakan didalam script.
+dibawah modul ```Hosts``` baris paling pertama. ```Vars``` digunakan untuk mendeclare seluruh variable yang digunakan didalam script.
 
 ## Langkah 9 - Menyatukan Playbook
 
@@ -548,13 +549,13 @@ Sehingga jika disatukan, maka playbooknya akan terlihat seperti ini :
     ansible-playbook -i hosts laravel.yml -k
     ```
 
-2. Jika error, baca errornya dan perbaiki (tapi insya Allah sudah ndak, oh mungkin indentasinya). Jika sukses, maka lanjutkan testing di browser.
+2. Jika error, baca errornya dan perbaiki (mungkin indentasi, spasi dan tabnya). Jika sukses, maka lanjutkan testing di browser.
 
     Keterangan:
 
     * Jika muak dengan si **cowsay**, matikan saja sapinya dengan cara ```export ANSIBLE_NOCOWS="1"``` 
 
-3. Ketikkan alamat VM Worker di browser, dalam hal ini adalah ```192.168.122.28``` dan ```192.168.122.101```.
+3. Ketikkan alamat VM Worker di browser, yang dalam hal ini adalah ```192.168.122.28``` dan ```192.168.122.101```.
 
 ![Web 1](https://github.com/nahdazahra/cloud2018/blob/master/Ansible/img/ss6_web1.png)
 
