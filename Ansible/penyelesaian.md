@@ -1,18 +1,15 @@
-## Dokumentasi Penyelesaian Tugas Docker
-# Deploy Aplikasi Python Flask menggunakan Docker, Nginx sebagai Load Balancer dan MySQL sebagai Database
+## Dokumentasi Penyelesaian Tugas Ansible
+# Deploy Aplikasi Laravel menggunakan Ansible, Nginx sebagai Load Balancer dan MySQL sebagai Database
 
-Dalam menyelesaikan permasalahan tersebut, ada beberapa langkah-langkah yang harus dilakukan. Secara garis besar, seperti ini:
+Dalam menyelesaikan permasalahan tersebut, ada beberapa langkah-langkah yang harus dilakukan, yaitu: 
 
-1. Membuat custom image container **python flask** sebagai worker
-2. Membuat image container **nginx** sebagai load-balancer (boleh menggunakan yang sudah ada di Docker Hub)
-3. Membuat image container **mysql** sebagai database (boleh menggunakan yang sudah ada di Docker Hub)
-4. Membuat **docker-compose.yml** untuk menyatukan mereka bertiga supaya bisa dijalankan bersama-sama
+## 1. Membuat 3 Virtual Machine
+Membuat 3 VM yang terdiri dari 2 VM Ubuntu 16.04 sebagai Worker dan 1 VM Debian 9 sebagai DB Server. Dalam hal ini, kami menggunakan aplikasi **hypervisor** kategori full virtualization, yaitu VirtualBox dan KVM.
 
-Untuk lebih jelasnya, dapat dilihat pada ilustrasi di bawah ini
 
-![ilustrasi](img/ilustrasi.png)
 
-## Langkah-langkah
+## 2. Membuat 3 Virtual Machine
+Membuat 3 VM yang terdiri dari 2 VM Ubuntu 16.04 sebagai Worker dan 1 VM Debian 9 sebagai DB Server. Dalam hal ini, kami menggunakan aplikasi **hypervisor** kategori full virtualization, yaitu VirtualBox dan KVM.   
 
 1. Membuat ``Dockerfile`` untuk custom image container python flask. Nantinya, image ini akan digunakan sebagai Worker.
    
@@ -188,8 +185,12 @@ YAY SELESAI!
 
 Sehingga, isi dari direktori docker kami adalah sebagai berikut:
 
+<<<<<<< HEAD
+![tree-docker](img/tree-docker.png)
+=======
 ![tree-docker](https://github.com/nahdazahra/cloud2018/blob/master/Docker/img/tree-docker.png)
 
 ## Script
 
 [Docker](https://github.com/nahdazahra/cloud2018/tree/master/Docker/Docker)
+>>>>>>> 711677ddab4c9c4d0feeb8e2b1bf9c9f7b6618f4
