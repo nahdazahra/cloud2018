@@ -57,7 +57,7 @@ Dengan asumsi kami sudah menginstall **ansible** dan **sshpass** di PC kami, mak
     * parameter **-i** : untuk men-declare ansible inventory.
     * parameter **-m** : untuk men-declare module command (dalam hal ini adalah command **ping**).
     * parameter **all** : untuk penanda ansible dijalankan di host mana. Parameter **all** bisa diganti dengan nama host.
-    * parameter **-k** digunakan untuk menanyakan password login ssh.
+    * parameter **-k** : untuk menanyakan password login ssh.
 
     ![Testing](https://github.com/nahdazahra/cloud2018/blob/master/Ansible/img/ss5_testing.png)
 
@@ -65,13 +65,14 @@ Dengan asumsi kami sudah menginstall **ansible** dan **sshpass** di PC kami, mak
 
 ## Langkah 3 - Grouping Host
 
-Membuka file ```hosts``` dan menambahkan nama group dalam tanda **[]**. Dalam hal ini, kami memberi nama group **Worker**.
+Membuka file ```hosts``` dan menambahkan nama group dalam tanda **[ ]**. Dalam hal ini, kami memberi nama group **Worker**.
 
-    ```
-    [worker]
-    worker1 ansible_host=192.168.122.28 ansible_ssh_user=cloud ansible_become_pass=raincloud123!
-    worker2 ansible_host=192.168.122.101 ansible_ssh_user=cloud ansible_become_pass=raincloud123!
-    ```
+```
+[worker]
+worker1 ansible_host=192.168.122.28 ansible_ssh_user=cloud ansible_become_pass=raincloud123!
+worker2 ansible_host=192.168.122.101 ansible_ssh_user=cloud ansible_become_pass=raincloud123!
+```
+
 ## Langkah 4 - Instalasi Software Pendukung
 
 Software yang dibutuhkan untuk menjalankan Aplikasi Laravel 5.6 adalah:
