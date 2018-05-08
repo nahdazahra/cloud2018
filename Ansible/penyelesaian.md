@@ -174,7 +174,7 @@ Seluruh software tersebut akan diinstall pada hosts **worker** menggunakan file 
     * Variable ```item``` yang berada dalam tanda **jinja** "{{ }}" digantikan dengan ```with_items```. 
     * **Zip** dan **unzip** diinstall karena kedepannya akan digunakan untuk menginstall Composer supaya prosesnya lebih cepat.
     * Proses menginstall **PHP 7.2** adalah harus terlebih dulu menginstall ```python-software-properties```, menambah repo, kemudian baru bisa menginstall php 7.2 beserta packages2nya.
-    * ```Handlers``` digunakan untuk mendefinisikan hal-hal yang dipanggil di modul ```notify```. Biasanya terkait dengan **restart service**. Kami sertakan pula **stop** dan **start** hanya untuk sekadar jaga-jaga.
+    * ```Handlers``` digunakan untuk mendefinisikan task yang dipanggil di modul ```notify```, biasanya terkait dengan **restart service**. Kami tuliskan pula **stop** dan **start** hanya untuk sekadar jaga-jaga.
 
 ## Langkah 5 - Clone Git yang Berisi Aplikasi Laravel
 
@@ -200,7 +200,7 @@ Membuka ```laravel.yml``` dan memasukkan script berikut:
 Keterangan:
 
 * Variable ```laravel_root_dir``` diganti dengan ```/var/www/laravel``` yang nantinya akan di-declare di modul ```vars```.
-* Variable ```ansible_ssh_user``` diganti sesuai dengan yang ada pada file ```hosts```, dalam soal ini adalah ```cloud```.
+* Variable ```ansible_ssh_user``` diganti sesuai dengan yang ada pada file ```hosts``` yang dalam hal ini adalah ```cloud```.
 
 ## Langkah 6 - Instalasi Composer dan Setting Environment Laravel
 
@@ -209,56 +209,56 @@ Keterangan:
     ```yml
         # INSTALL COMPOSER
         - name: Download Composer
-        script: scripts/install_composer.sh
+          script: scripts/install_composer.sh
 
         - name: Setting composer jadi global
-        become: true
-        command: mv composer.phar /usr/local/bin/composer
+          become: true
+          command: mv composer.phar /usr/local/bin/composer
 
         - name: Set permission composer
-        become: true
-        file:
+          become: true
+          file:
             path: /usr/local/bin/composer
             mode: "a+x"
 
         - name: Install dependencies laravel
-        composer:
+          composer:
             working_dir: "{{ laravel_root_dir }}"
             no_dev: no
         
         # SETTING ENVIRONMENT
         - name: Bikin .env
-        command: cp "{{ laravel_root_dir }}/.env.example" "{{ laravel_root_dir }}/.env"
+          command: cp "{{ laravel_root_dir }}/.env.example" "{{ laravel_root_dir }}/.env"
         
         - name: php artisan key generate
-        command: php "{{ laravel_root_dir }}/artisan" key:generate
+          command: php "{{ laravel_root_dir }}/artisan" key:generate
 
         - name: php artisan clear cache
-        command: php "{{ laravel_root_dir }}/artisan" cache:clear
+          command: php "{{ laravel_root_dir }}/artisan" cache:clear
         
         - name: set APP_DEBUG=false
-        lineinfile: 
+          lineinfile: 
             dest: "{{ laravel_root_dir }}/.env"
             regexp: '^APP_DEBUG='
             line: APP_DEBUG=false
 
         - name: set APP_ENV=production
-        lineinfile: 
+          lineinfile: 
             dest: "{{ laravel_root_dir }}/.env"
             regexp: '^APP_ENV='
             line: APP_ENV=production
 
         - name: Ganti permission bootstrap/cache directory
-        file:
+          file:
             path: "{{ laravel_cache_dir }}"
             state: directory
             mode: "a+x"
 
         - name: Ganti permission vendor directory
-        command: chmod -R 777 "{{ laravel_vendor_dir }}"
+          command: chmod -R 777 "{{ laravel_vendor_dir }}"
 
         - name: Ganti permission storage directory
-        command: chmod -R 777 "{{ laravel_storage_dir }}" 
+          command: chmod -R 777 "{{ laravel_storage_dir }}" 
     ```
     Keterangan:
 
