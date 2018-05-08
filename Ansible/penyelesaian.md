@@ -65,7 +65,7 @@ Dengan asumsi kami sudah menginstall **ansible** dan **sshpass** di PC kami, mak
 
 ## Langkah 3 - Grouping Host
 
-Membuka file ```hosts``` dan menambahkan nama group dalam tanda **[ ]**. Dalam hal ini, kami memberi nama group **Worker**.
+Membuka file ```hosts``` dan menambahkan nama group dalam tanda **[ ]**. Dalam hal ini, kami memberi nama group **worker**.
 
 ```
 [worker]
@@ -82,7 +82,7 @@ Software yang dibutuhkan untuk menjalankan Aplikasi Laravel 5.6 adalah:
     * Composer
     * Git
 
-Seluruh software tersebut akan diinstall pada hosts **Worker** menggunakan file **yml**. Dalam dunia per-ansible-an, kita menyebutnya sebagai **playbook**.
+Seluruh software tersebut akan diinstall pada hosts **worker** menggunakan file **yml**. Dalam dunia per-ansible-an, kita menyebutnya sebagai **playbook**.
 
 1. Membuat playbook baru bernama **laravel.yml**.
 
