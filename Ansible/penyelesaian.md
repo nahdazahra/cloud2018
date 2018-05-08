@@ -357,7 +357,7 @@ Keterangan:
     ```
 ## Langkah 8 - Mendeclare Vars
 
-Membuka ```laravel.yml``` dan memasukkan script berikut:
+Membuka ```laravel.yml``` dan memasukkan script berikut dibawah modul ```Hosts``` baris paling pertama.
 
 ```yml
 vars:
@@ -368,7 +368,7 @@ vars:
     laravel_storage_dir: "{{ laravel_root_dir }}/storage"
     nginx_conf_dir: /etc/nginx
 ```
-dibawah modul ```Hosts``` baris paling pertama. ```Vars``` digunakan untuk mendeclare seluruh variable yang digunakan didalam script.
+```Vars``` digunakan untuk mendeclare seluruh variable yang digunakan didalam script.
 
 ## Langkah 9 - Menyatukan Playbook
 
