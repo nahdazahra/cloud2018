@@ -25,4 +25,4 @@
 
 ## Penyelesaian
 
-[Sebuah Penyelesaian](https://github.com/nahdazahra/cloud2018/tree/master/Docker/penyelesaian.md)
+[Sebuah Penyelesaian](https://github.com/nahdazahra/cloud2018/blob/master/Ansible/penyelesaian.md)
