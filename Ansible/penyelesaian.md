@@ -174,7 +174,7 @@ Seluruh software tersebut akan diinstall pada hosts **worker** menggunakan file 
     * Variable ```item``` yang berada dalam tanda **jinja** "{{ }}" digantikan dengan ```with_items```. 
     * **Zip** dan **unzip** diinstall karena kedepannya akan digunakan untuk menginstall Composer supaya prosesnya lebih cepat.
     * Proses menginstall **PHP 7.2** adalah harus terlebih dulu menginstall ```python-software-properties```, menambah repo, kemudian baru bisa menginstall php 7.2 beserta packages2nya.
-    * ```Handlers``` digunakan untuk meng-handle hal-hal yang ada dalam modul ```notify```. Biasanya terkait dengan **restart service**. Kami sertakan pula **stop** dan **start** hanya untuk sekadar jaga-jaga.
+    * ```Handlers``` digunakan untuk mendefinisikan hal-hal yang dipanggil di modul ```notify```. Biasanya terkait dengan **restart service**. Kami sertakan pula **stop** dan **start** hanya untuk sekadar jaga-jaga.
 
 ## Langkah 5 - Clone Git yang Berisi Aplikasi Laravel
 
