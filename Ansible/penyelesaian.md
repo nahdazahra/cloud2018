@@ -8,11 +8,11 @@ VirtualBox mungkin sudah tidak asing lagi di telinga kita, namun apa itu KVM?
 
 > Kernel-Based Virtual Machine (KVM) adalah salah satu teknologi virtualisasi (hypervisor) yang dikembangkan oleh Linux.
 
-![Virtual Machine Manager](https://github.com/nahdazahra/cloud2018/blob/master/Ansible/img/ss1_kvm.png)
+![Virtual Machine Manager](img/ss1_kvm.png)
 
 Kami menggunakan Virtual Machine Manager untuk mengatur KVM yang digunakan.
 
-![KVM Ubuntu 16.04](https://github.com/nahdazahra/cloud2018/blob/master/Ansible/img/ss2_ubuntu1604.png)
+![KVM Ubuntu 16.04](img/ss2_ubuntu1604.png)
 
 KVM yang telah diinstall Ubuntu 16.04 yang selanjutnya akan digunakan sebagai worker.
 
@@ -39,9 +39,9 @@ Dengan asumsi kami sudah menginstall **ansible** dan **sshpass** di PC kami, mak
     
     **[IP VM 1]** dan **[IP VM 2]** diganti dengan IP masing-masing VM Worker.
 
-    ![KVM Worker 1](https://github.com/nahdazahra/cloud2018/blob/master/Ansible/img/ss3_ipworker1.png)
+    ![KVM Worker 1](img/ss3_ipworker1.png)
 
-    ![KVM Worker 2](https://github.com/nahdazahra/cloud2018/blob/master/Ansible/img/ss4_ipworker2.png)
+    ![KVM Worker 2](img/ss4_ipworker2.png)
 
     Sehingga, isi file ```hosts``` menjadi seperti ini:
 
@@ -60,7 +60,7 @@ Dengan asumsi kami sudah menginstall **ansible** dan **sshpass** di PC kami, mak
     * parameter **all** : untuk penanda ansible dijalankan di host mana. Parameter **all** bisa diganti dengan nama host.
     * parameter **-k** : untuk menanyakan password login ssh.
 
-    ![Testing](https://github.com/nahdazahra/cloud2018/blob/master/Ansible/img/ss5_testing.png)
+    ![Testing](img/ss5_testing.png)
 
     Yeay ping-nya sukses!
 
@@ -248,6 +248,30 @@ Keterangan:
             dest: "{{ laravel_root_dir }}/.env"
             regexp: '^APP_ENV='
             line: APP_ENV=production
+
+        - name: set DB connection
+          lineinfile: 
+            dest: "{{ laravel_root_dir }}/.env"
+            regexp: '^DB_HOST='
+            line: DB_HOST=ipku
+
+        - name: set DB name
+          lineinfile: 
+            dest: "{{ laravel_root_dir }}/.env"
+            regexp: '^DB_DATABASE='
+            line: DB_DATABASE=hackathon
+
+        - name: set DB username
+          lineinfile: 
+            dest: "{{ laravel_root_dir }}/.env"
+            regexp: '^DB_USERNAME='
+            line: DB_USERNAME=regal
+
+        - name: set DB password
+          lineinfile: 
+            dest: "{{ laravel_root_dir }}/.env"
+            regexp: '^DB_PASSWORD='
+            line: DB_PASSWORD=bolaubi
 
         - name: Ganti permission bootstrap/cache directory
           file:
